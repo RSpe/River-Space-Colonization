@@ -69,7 +69,7 @@ int main(void) {
 
 		Shader shader("Basic.shader");
 		shader.Bind();
-		shader.SetUniform4f("u_color", 0.8f, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
 		va.Unbind();
 		vb.Unbind();
