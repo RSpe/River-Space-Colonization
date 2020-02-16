@@ -48,11 +48,11 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.cpp.cpp">
-      <Filter>Source Files\vendor\stb_image</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Source Files\vendor\stb_image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
