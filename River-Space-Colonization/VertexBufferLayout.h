@@ -13,11 +13,11 @@ struct VertexBufferElement
 	{
 		switch (type)
 		{
-		case GL_FLOAT: return 4;
-		case GL_UNSIGNED_INT: return 4;
-		case GL_UNSIGNED_BYTE: return 1;
+		case GL_FLOAT:			return 4;
+		case GL_UNSIGNED_INT:	return 4;
+		case GL_UNSIGNED_BYTE:	return 1;
 		}
-		//ASSERT(false);
+		ASSERT(false);
 		return 0;
 	}
 };
@@ -40,21 +40,21 @@ public:
 	template<>
 	void Push<float>(unsigned int count)
 	{
-		m_Elements.push_back({ GL_FLOAT, count, GL_FALSE });
+		m_Elements.push_back({ count, GL_FLOAT, GL_FALSE });
 		m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
 	}
 
 	template<>
 	void Push<unsigned int>(unsigned int count)
 	{
-		m_Elements.push_back({ GL_UNSIGNED_INT, count, GL_FALSE });
+		m_Elements.push_back({ count, GL_UNSIGNED_INT, GL_FALSE });
 		m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
 	}
 
 	template<>
 	void Push<unsigned char>(unsigned int count)
 	{
-		m_Elements.push_back({ GL_UNSIGNED_BYTE, count, GL_TRUE });
+		m_Elements.push_back({ count, GL_UNSIGNED_BYTE, GL_TRUE });
 		m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
 	}
 
