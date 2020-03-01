@@ -45,7 +45,7 @@ int main(void)
 		return -1;
 	}
 
-	/*Make the window's current context */
+	/* Make the window's current context */
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(1);
@@ -82,7 +82,7 @@ int main(void)
 			{
 				currentTest->OnUpdate(0.0f);
 				currentTest->OnRender();
-				ImGui::Begin("Test");
+				ImGui::Begin("Debug");
 				if (currentTest != testMenu && ImGui::Button("<-"))
 				{
 					delete currentTest;
