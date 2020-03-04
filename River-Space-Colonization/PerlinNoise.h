@@ -18,7 +18,6 @@ namespace test
 		void SetOctave(int octave);
 		void SetPersistence(int persistence);
 		void SetAmplitude(int amplitude);
-		//float** GenerateMap();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
