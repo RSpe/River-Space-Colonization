@@ -130,29 +130,6 @@ namespace test
 
 	}
 
-	//float** PerlinNoise::GenerateMap()
-	//{
-	//	float** map = new float* [width];
-	//
-	//	for (int i = 0; i < width; i++) {
-	//		map[i] = new float[width];
-	//		for (int j = 0; j < mapHeight; j++) {
-	//			map[i][j] = 0;
-	//		}
-	//	}
-	//
-	//	for (int i = 0; i < width; i++) {
-	//		for (int j = 0; j < width; j++) {
-	//			float nx = ((float)i / mapWidth) + 0.5f;
-	//			float ny = ((float)j / mapHeight) + 0.5f;
-	//			auto value = PerlinResult(nx, ny);
-	//			map[i][j] += value;
-	//		}
-	//	}
-	//
-	//	return map;
-	//}
-
 	float PerlinNoise::Lerp(float a, float b, float x)
 	{
 		return ((1.0f - x) * a) + (x * b);

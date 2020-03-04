@@ -23,7 +23,7 @@
 #include "TestClearColor.h"
 #include "TestTexture2D.h"
 
-#include "PerlinNoise.h"
+//#include "PerlinNoise.h"
 
 int main(void) 
 {
@@ -73,7 +73,7 @@ int main(void)
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
-		testMenu->RegisterTest<test::PerlinNoise>("Perlin Noise");
+		//testMenu->RegisterTest<test::PerlinNoise>("Perlin Noise");
 
 		while (!glfwWindowShouldClose(window))
 		{
