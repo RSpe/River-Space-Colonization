@@ -30,25 +30,33 @@ namespace test
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		
+		/* Used to store the state needed to supply vertex data, bind with VBO data location to link to shader */
 		m_VAO = std::make_unique<VertexArray>();
 
+		/* Buffer object that is used as a source for vertex array data, vertex shader is executed for every vertex in the 
+		   VertexBuffer (VBO) */
 		m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 4 * 4 * sizeof(float));
 
+		/* Used to store vertex element properties */
 		VertexBufferLayout layout;
 		layout.Push<float>(2);
 		layout.Push<float>(2);
 		m_VAO->AddBuffer(*m_VertexBuffer, layout);
 
+		/* Used to cut down on repeated vertices by only storing the specific ones needed to create the object */
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 6);
 
 		//IndexBuffer ib(indices, 6);
 
-		m_Shader = std::make_unique<Shader>("Basic.shader");
+		/* Interact, specify shader and set uniforms */
+		m_Shader = std::make_unique<Shader>("Texture.shader");
 		m_Shader->Bind();
-		m_Shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+		/* Uniforms are read only data passed to shader file, used to pass commands to the shader. */
+		//m_Shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
 		m_Texture = std::make_unique<Texture>("android(1).bmp");
-		m_Shader->SetUniform1i("u_Texture", 0);
+		/* Bind to texture slot 0 */
+		m_Shader->SetUniform1i("u_Texture", 0); 
 	}
 
 	TestTexture2D::~TestTexture2D()

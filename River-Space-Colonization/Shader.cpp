@@ -102,6 +102,7 @@ void Shader::Unbind() const
 	GLCall(glUseProgram(0));
 }
 
+/* Uniform used to move data from CPU to shader, set per draw call */
 void Shader::SetUniform1i(const std::string& name, int value)
 {
 	GLCall(glUniform1i(GetUniformLocation(name), value));

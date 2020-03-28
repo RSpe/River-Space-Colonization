@@ -22,6 +22,7 @@
 
 #include "TestClearColor.h"
 #include "TestTexture2D.h"
+#include "TestTreeSpaceColonisation.h"
 
 //#include "PerlinNoise.h"
 
@@ -73,10 +74,12 @@ int main(void)
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
-		//testMenu->RegisterTest<test::PerlinNoise>("Perlin Noise");
+		testMenu->RegisterTest<test::TestTreeSpaceColonisation>("Tree Space Colonization");
+		//testMenu->RegisterTest<test::TestPerlinNoise>("Perlin Noise");
 
 		while (!glfwWindowShouldClose(window))
 		{
+			
 			GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 			renderer.Clear();
 
