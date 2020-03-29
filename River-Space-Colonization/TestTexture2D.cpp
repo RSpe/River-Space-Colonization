@@ -4,7 +4,7 @@
 #include "imgui/imgui.h"
 
 #include "glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "gtc/matrix_transform.hpp"
 
 namespace test 
 {
