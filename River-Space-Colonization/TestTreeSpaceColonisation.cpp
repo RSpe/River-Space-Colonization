@@ -48,7 +48,7 @@ namespace test
 		m_Shader = std::make_unique<Shader>("River.shader");
 		m_Shader->Bind();
 		/* Have to call uniforms after a shader is bound */
-		m_Shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+		m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
 	}
 
@@ -87,7 +87,7 @@ namespace test
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
 	{
-
+		
 	}
 
 	void TestTreeSpaceColonisation::OnRender()
