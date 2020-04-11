@@ -176,6 +176,9 @@
     <ClInclude Include="LeafGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Texture.shader">

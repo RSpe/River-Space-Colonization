@@ -189,6 +189,7 @@
     <ClInclude Include="imgui\stb_rect_pack.h" />
     <ClInclude Include="imgui\stb_textedit.h" />
     <ClInclude Include="imgui\stb_truetype.h" />
+    <ClInclude Include="Include.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LeafGeneration.h" />
