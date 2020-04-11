@@ -9,9 +9,9 @@ namespace test
 
 		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1);
 
-		std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, 0.0f), glm::vec2(NULL, NULL), glm::vec2(0.0f, -1.0f)));
+		std::shared_ptr<Branch> root(new Branch(NULL, glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, -1.0f)));
 
-		branches.push_back(root);
+		this->branches.push_back(root);
 
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -32,6 +32,15 @@ namespace test
 				if (dist < max_dist) {
 					found = true;
 				}
+			}
+
+			if (!found)
+			{
+				glm::vec2 new_position = (current->get_position()) + (current->get_direction());
+				glm::vec2 new_direction = current->get_direction();
+				std::shared_ptr<Branch> next_branch(new Branch(current, new_position, new_direction));
+				current = next_branch;
+				this->branches.push_back(current);
 			}
 		}
 		//m_VAO = std::make_unique<VertexArray>();

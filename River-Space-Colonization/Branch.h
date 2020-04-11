@@ -1,17 +1,17 @@
 #pragma once
 
-#include "TestTreeSpaceColonisation.h"
+#include "Include.h"
 
 class Branch
 {
 	public:
-		Branch(glm::vec2 pos, glm::vec2 parent_pos, glm::vec2 dir);
+		Branch(std::shared_ptr<Branch> par, glm::vec2 pos, glm::vec2 dir);
 		glm::vec2 get_position() const;
-		glm::vec2 get_parent() const;
+		std::shared_ptr<Branch> get_parent() const;
 		glm::vec2 get_direction() const;
 	private:
 		glm::vec2 position;
-		glm::vec2 parent_position;
+		std::shared_ptr<Branch> parent;
 		glm::vec2 direction;
 };
 

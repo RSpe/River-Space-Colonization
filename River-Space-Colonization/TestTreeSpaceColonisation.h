@@ -1,21 +1,17 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "Include.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "Shader.h"
+#include "IndexBuffer.h"
+#include "Renderer.h"
 
 #include "Test.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "Leaf.h"
-#include "Branch.h"
-#include "LeafGeneration.h"
 
-#include <vector>
-#include <ctime>
-#include <random>
-#include <iostream>
-#include <algorithm> // for copy
-#include <iterator> // for ostream_iterator
+#include "Leaf.h"
+#include "LeafGeneration.h"
+#include "Branch.h"
 
 namespace test
 {
