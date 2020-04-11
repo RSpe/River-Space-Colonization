@@ -104,9 +104,9 @@ int main(void)
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
-		delete currentTest;
 		if (currentTest != testMenu)
 			delete testMenu;
+		delete currentTest;
 	}
 
 	ImGui_ImplGlfwGL3_Shutdown();

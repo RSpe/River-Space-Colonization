@@ -19,16 +19,16 @@ namespace test
 	{
 	public:
 		TestTreeSpaceColonisation();
-		~TestTreeSpaceColonisation();
-
+		
+		void Grow();
 		void SetSeed(int seed);
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int max_dist = 500;
-		int min_dist = 10;
+		int max_distance = 500;
+		int min_distance = 10;
 	private:
 
 		int window_width = 640;
