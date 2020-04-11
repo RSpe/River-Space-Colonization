@@ -11,7 +11,7 @@ namespace test
 
 		std::shared_ptr<Branch> root(new Branch(NULL, glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, -1.0f)));
 
-		this->branches.push_back(root);
+		branches.push_back(root);
 
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -40,7 +40,7 @@ namespace test
 				glm::vec2 new_direction = current->get_direction();
 				std::shared_ptr<Branch> next_branch(new Branch(current, new_position, new_direction));
 				current = next_branch;
-				this->branches.push_back(current);
+				branches.push_back(current);
 			}
 		}
 		//m_VAO = std::make_unique<VertexArray>();
