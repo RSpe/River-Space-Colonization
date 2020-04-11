@@ -1,54 +1,51 @@
 #include "TestTreeSpaceColonisation.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <algorithm> // for copy
-#include <iterator> // for ostream_iterator
 
 namespace test
 {
-	struct Branch {
-		float positionx;
-		float positiony;
-		float parent;
-		float directionx;
-		float directiony;
-	};
 
 	TestTreeSpaceColonisation::TestTreeSpaceColonisation()
 	{
-		Leaf();
+		int leaves_to_generate = 100;
 
-		float positions[200];
-		std::copy(leaves.begin(), leaves.end(), positions);
+		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1);
 
-		float posx = window_width / 2;
-		float posy = window_height / 2;
-		float directx = 0;
-		float directy = -1;
+		std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, 0.0f), glm::vec2(NULL, NULL), glm::vec2(0.0f, -1.0f)));
 
-		Branch root = { posx, posy, 0, directx, directy };
+		branches.push_back(root);
 
-		
-
-
-		
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		m_VAO = std::make_unique<VertexArray>();
+		for (int i = 0; i < leaves_to_generate; i++)
+		{
+			leaves.push_back(Leaf(this->random_leaves[i]));
+		}
 
-		m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 100 * 2 * sizeof(float));
+		bool found = false;
+		std::shared_ptr<Branch> current = root;
 
-		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		m_VAO->AddBuffer(*m_VertexBuffer, layout);
+		while (!found)
+		{
+			for (int j = 0; j < leaves_to_generate; j++)
+			{
+				float dist = glm::distance(current->get_position(), leaves[j].get_position());
+				if (dist < max_dist) {
+					found = true;
+				}
+			}
+		}
+		//m_VAO = std::make_unique<VertexArray>();
 
-		m_Shader = std::make_unique<Shader>("River.shader");
-		m_Shader->Bind();
-		/* Have to call uniforms after a shader is bound */
-		m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
+		//m_VertexBuffer = std::make_unique<VertexBuffer>(leaf, 100 * 2 * sizeof(float));
+
+		//VertexBufferLayout layout;
+		//layout.Push<float>(2);
+		//m_VAO->AddBuffer(*m_VertexBuffer, layout);
+
+		//m_Shader = std::make_unique<Shader>("River.shader");
+		//m_Shader->Bind();
+		///* Have to call uniforms after a shader is bound */
+		//m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
 	}
 
@@ -59,31 +56,8 @@ namespace test
 
 	void TestTreeSpaceColonisation::SetSeed(int seed)
 	{
-		given_seed = seed;
+		//given_seed = seed;
 	}
-
-	void TestTreeSpaceColonisation::Leaf()
-	{
-		/* Range of vertex values that can be drawn */
-		int low = -1;
-		int high = 1;
-
-		srand(given_seed);
-
-		for (int i = 0; i < 100; i++)
-		{
-			float leaf_position_width = low + static_cast<float>(rand())/(static_cast<float>(RAND_MAX/(high - low)));
-			float leaf_position_height = low + static_cast<float>(rand())/(static_cast<float>(RAND_MAX/(high - low)));
-			leaves.push_back(leaf_position_width);
-			leaves.push_back(leaf_position_height);
-		}
-	}
-
-	//void TestTreeSpaceColonisation::Branch(float posx, float posy, float parent, float direction) 
-	//{
-
-
-	//}
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
 	{
