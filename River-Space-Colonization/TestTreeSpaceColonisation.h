@@ -1,12 +1,21 @@
 #pragma once
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Test.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "Leaf.h"
+#include "Branch.h"
+#include "LeafGeneration.h"
 
 #include <vector>
 #include <ctime>
 #include <random>
+#include <iostream>
+#include <algorithm> // for copy
+#include <iterator> // for ostream_iterator
 
 namespace test
 {
@@ -21,20 +30,19 @@ namespace test
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
 		void OnImGuiRender() override;
+
+		int max_dist = 500;
+		int min_dist = 10;
 	private:
-		void Leaf();
-		//void Branch(float posx, float posy, float parent, float direction);
 
 		int window_width = 640;
 		int window_height = 480;
-
-		int given_seed = 1;
-		int root;
 		int branch_direction;
 
-		std::vector<float> leaves;
+		std::vector<glm::vec2> random_leaves;
+		std::vector<Leaf> leaves;
 		//std::vector<float> position;
-		std::vector< std::vector<int> > branches;
+		std::vector<std::shared_ptr<Branch>> branches;
 
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer;
