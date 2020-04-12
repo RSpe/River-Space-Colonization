@@ -27,13 +27,14 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int max_distance = 500;
-		int min_distance = 10;
+		float max_distance = 150;
+		float min_distance = 10;
+		float branch_length = 7;
 	private:
 
-		int window_width = 640;
-		int window_height = 480;
-		int branch_direction;
+		//int window_width = 640;
+		//int window_height = 480;
+		//int branch_direction;
 
 		std::vector<glm::vec2> random_leaves;
 		std::vector<Leaf> leaves;

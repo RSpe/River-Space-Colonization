@@ -41,7 +41,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	 
 	/* Create window mode and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(600, 600, "Hello World", NULL, NULL);
 	if (window == NULL)
 	{
 		glfwTerminate();
