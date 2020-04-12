@@ -169,7 +169,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TestTreeSpaceColonisation.cpp" />
     <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="TestPerlinNoise.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TestClearColor.cpp" />
     <ClCompile Include="TestTexture2D.cpp" />
@@ -197,7 +196,6 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TestTreeSpaceColonisation.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="TestPerlinNoise.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TestClearColor.h" />
     <ClInclude Include="TestTexture2D.h" />

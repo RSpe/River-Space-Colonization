@@ -81,9 +81,6 @@
     <ClCompile Include="TestTexture2D.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
-    <ClCompile Include="TestPerlinNoise.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
     <ClCompile Include="TestTreeSpaceColonisation.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
       <Filter>Source Files\tests</Filter>
     </ClInclude>
     <ClInclude Include="TestTexture2D.h">
-      <Filter>Source Files\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="TestPerlinNoise.h">
       <Filter>Source Files\tests</Filter>
     </ClInclude>
     <ClInclude Include="TestTreeSpaceColonisation.h">

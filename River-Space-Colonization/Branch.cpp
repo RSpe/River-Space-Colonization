@@ -1,12 +1,13 @@
 #include "Branch.h"
 
-Branch::Branch(std::shared_ptr<Branch> par, glm::vec2 pos, glm::vec2 dir)
+Branch::Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir)
 {
-	parent = par;
+	parent_position = par;
 	position = pos;
 	direction = dir;
 	counter = 0;
 	original_direction = dir;
+	parent_index;
 }
 
 glm::vec2 Branch::get_position() const
@@ -14,9 +15,24 @@ glm::vec2 Branch::get_position() const
 	return this->position;
 }
 
-std::shared_ptr<Branch> Branch::get_parent() const
+glm::vec2 Branch::get_parent() const
 {
-	return this->parent;
+	return this->parent_position;
+}
+
+void Branch::set_parent(glm::vec2 new_parent)
+{
+	this->parent_position = new_parent;
+}
+
+int Branch::get_parent_index()
+{
+	return this->parent_index;
+}
+
+void Branch::set_parent_index(int index)
+{
+	this->parent_index = index;
 }
 
 glm::vec2 Branch::get_direction() const

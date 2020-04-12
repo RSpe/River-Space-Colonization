@@ -6,13 +6,15 @@ const std::vector<glm::vec2> LeafGeneration::generate_leaves(int num_leaves, int
 
 	srand(seed);
 
-	int low = -1;
-	int high = 1;
+	int x_low = -600;
+	int x_high = 600;
+	int y_low = -600 + 100;
+	int y_high = 600;
 
 	for (int i = 0; i < num_leaves; i++) 
 	{
-		glm::vec2 xy_position = glm::vec2((low + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (high - low))), low + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (high - low)))));
-		random_leaves.push_back(xy_position);
+		glm::vec2 xy_position = glm::vec2((x_low + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (x_high - x_low)))), (y_low + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (y_high - y_low)))));
+		random_leaves.push_back(xy_position); 
 	}
 	return random_leaves;
 }

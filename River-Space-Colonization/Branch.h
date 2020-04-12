@@ -5,10 +5,13 @@
 class Branch
 {
 	public:
-		Branch(std::shared_ptr<Branch> par, glm::vec2 pos, glm::vec2 dir);
+		Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir);
 
 		glm::vec2 get_position() const;
-		std::shared_ptr<Branch> get_parent() const;
+		glm::vec2 get_parent() const;
+		void set_parent(glm::vec2 new_parent);
+		int get_parent_index();
+		void set_parent_index(int index);
 		glm::vec2 get_direction() const;
 		void set_direction(glm::vec2 new_direction);
 		float get_count() const;
@@ -16,11 +19,12 @@ class Branch
 		void reset();
 
 	private:
-		std::shared_ptr<Branch> parent;
+		glm::vec2 parent_position;
 		glm::vec2 position;
 		glm::vec2 direction;
 
 		float counter;
 		glm::vec2 original_direction;
+		int parent_index;
 };
 

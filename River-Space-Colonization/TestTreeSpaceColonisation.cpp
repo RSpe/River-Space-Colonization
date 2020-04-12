@@ -2,50 +2,53 @@
 
 namespace test
 {
-
+	/* Building tree trunk */
 	TestTreeSpaceColonisation::TestTreeSpaceColonisation()
 	{
-		//std::cout << "Start!" << std::endl;
+		std::cout << "--------------Build-------------" << std::endl;
 
 		int leaves_to_generate = 100;
 
-		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1);
-		glm::vec2(0.0f, 0.5f);
+		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building.
 
-		std::shared_ptr<Branch> root(new Branch(NULL, glm::vec2(0.0f, 0.5f), glm::vec2(0.0f, -1.0f)));
+		std::shared_ptr<Branch> root(new Branch(glm::vec2(NULL, NULL), glm::vec2(300.0f, 0.0f), glm::vec2(0.0f, 1.0f))); // Create root branch, NULL parents, position starting at (0.0f, 0.5), direction of (0.0f, -1.0f) which is pointing upwards.
 
-		branches.push_back(root);
+		branches.push_back(root); // Add root as the first branch object.
 
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 		for (int i = 0; i < leaves_to_generate; i++)
 		{
-			//std::cout << i << std::endl;
-			leaves.push_back(Leaf(this->random_leaves[i]));
+			leaves.push_back(Leaf(random_leaves[i])); // Add a leaf object to the leaves vector for all randomly generate leaf points.
 		}
 
 		bool found = false;
-		std::shared_ptr<Branch> current(root);
+		std::shared_ptr<Branch> current = root;
 
 		while (!found)
 		{
+			/* Checking if the root is close enough to any leaves so it can begin growing towards them. */
 			for (int j = 0; j < leaves_to_generate; j++)
 			{
-				std::cout << j << std::endl;
 				float distance = glm::distance(current->get_position(), leaves[j].get_position());
-				if (distance < max_distance) {
+				if (distance < max_distance) { // Found branch to moved toward, end while loop.
 					found = true;
 				}
 			}
-
-			if (!found)
+			/* Create a branch off the root branch that starts at the end of the root branch and extends the same distance upwards. This step we are growing the tree in hope we find a leaf close enough to move towards. */
+			if (!found && !branches.empty())
 			{
-				glm::vec2 new_position = (current->get_position()) + (current->get_direction());
-				glm::vec2 new_direction = current->get_direction();
-				std::shared_ptr<Branch> next_branch(new Branch(current, new_position, new_direction));
-				current = next_branch;
-				branches.push_back(current);
+				std::cout << "heloo" << std::endl;
+				glm::vec2 parent_direction = current->get_direction();
+				glm::vec2 parent_position = glm::vec2(branches.back()->get_position());
+				glm::vec2 new_direction = parent_direction;
+				glm::vec2 new_position = parent_position + (new_direction * branch_length);
+				std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction));
+				int parent_index = branches.size() - 1;
+				next_branch->set_parent_index(parent_index);
+				branches.push_back(next_branch);
+				current = branches.back();
 			}
 		}
 		//m_VAO = std::make_unique<VertexArray>();
@@ -61,70 +64,107 @@ namespace test
 		///* Have to call uniforms after a shader is bound */
 		//m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
+		//std::cout << glm::to_string(branches[0]->get_position()) << std::endl;
+		Grow();
 	}
 
 	void TestTreeSpaceColonisation::Grow()
 	{
+		std::cout << "--------------Grow--------------" << std::endl;
 		int num_leaves = leaves.size();
 		int num_branches = branches.size();
+		//std::cout << num_leaves << std::endl;
+		//std::cout << num_branches << std::endl;
+		float record = -1;
 
 		for (int i = 0; i < num_leaves; i++)
 		{
-			std::cout << "growing" << std::endl;
-			Leaf leaf = leaves[i];
-			std::shared_ptr<Branch> closest_branch(NULL);
-			int record = 100000;
+			int closest_branch = -1;
 			for (int j = 0; j < num_branches; j++)
 			{
 				glm::vec2 current_branch_position = branches[j]->get_position();
-				float distance = glm::distance(leaf.get_position(), current_branch_position);
-				if (distance < min_distance)
+				float distance = glm::distance(leaves[i].get_position(), current_branch_position);
+				if (distance < min_distance) // Once branch reaches leaf, mark for deletion.
 				{
-					leaf.set_reached();
-					closest_branch = NULL;
-					break; 
+					//std::cout << distance << std::endl;
+					leaves[i].set_reached();
+					closest_branch = -1;
+					break;
 				}
 				else if (distance > max_distance)
 				{
-					continue;
+					//continue;
 				}
-				else if (closest_branch == NULL || distance < record)
+				else if ((closest_branch < 0) || distance < record) // If there is no set closest branch and its within distance then it will be set as the closest branch.
 				{
-					closest_branch = branches[j];
+					closest_branch = i;
 					record = distance;
 				}
 			}
 
-			if (closest_branch != NULL)
+			/* Find vector from base of branch to closest leaf, normalise, add it to the end of the branch in the same direction. */
+			if (closest_branch >= 0 && !leaves[i].get_reached())
 			{
-				glm::vec2 new_direction = leaf.get_position() - closest_branch->get_position();
-				glm::vec2 normalised = glm::normalize(new_direction);
-				glm::vec2 change_direction = closest_branch->get_direction() + normalised; // Direction of current leaned towards leaf
-				closest_branch->set_direction(change_direction);
-				closest_branch->increment_count(1);
+				//std::cout << glm::to_string(leaves[i].get_position()) << std::endl;
+				//std::cout << closest_branch << std::endl;
+				//glm::vec2 new_direction = leaves[i].get_position() - (glm::vec2(branches[closest_branch]->get_position()));
+				//glm::vec2 normalised = glm::normalize(new_direction);
+				//glm::vec2 change_direction = new_direction + normalised; // Direction of current leaned towards leaf
+				//branches[closest_branch]->set_direction(change_direction);
+				//std::cout << glm::to_string(change_direction) << std::endl;
+				//std::cout << glm::to_string(branches[0]->get_direction()) << std::endl;
+				//branches[closest_branch]->increment_count(1);
+				//std::cout << closest_branch->get_count() << std::endl;
+				//std::cout << branches[0]->get_count() << std::endl;
 			}
 
-			if (leaf.get_reached())
-			{
-				leaves.erase(leaves.begin() + i);
-			}
+			////std::cout << leaf.get_reached() << std::endl;
+			//if (leaves[i].get_reached())
+			//{
+			//	//std::cout << leaf.get_reached() << std::endl;
+			//	//std::cout << leaves.size() << std::endl;
+			//	//std::cout << i << std::endl;
+			//	leaves.erase(leaves.begin() + i);
+			//}
 		}
 
-		for (int k = num_branches - 1; k >= 0; k--)
-		{
-			std::shared_ptr<Branch> current_branch(branches[k]);
-			if (current_branch->get_count() > 0)
-			{
-				glm::vec2 old_position = current_branch->get_position();
-				glm::vec2 old_direction = current_branch->get_direction();
-				current_branch->set_direction(old_direction / current_branch->get_count());
-				glm::vec2 new_position = old_position + old_direction;
-				std::shared_ptr<Branch> new_branch(new Branch(current_branch, new_position, old_direction));
-				branches.push_back(new_branch);
-			}
-			current_branch->reset();
-		}
-	}
+	//std::vector<std::shared_ptr<Branch>> new_branches;
+	//for (int k = 0; k < branches.size(); k++)
+	//{
+	//	if (branches[k] != nullptr)
+	//	{
+	//		if (branches[k]->get_count() > 0)
+	//		{
+	//			glm::vec2 parent_direction = branches[k]->get_direction();
+	//			glm::vec2 parent_position = glm::vec2(branches[k]->get_position());
+	//			glm::vec2 next_direction = branches[k]->get_direction();
+	//			glm::vec2 new_direction = glm::normalize(next_direction / (float(branches[k]->get_count() + 1)));
+	//			glm::vec2 new_position = parent_position + (new_direction * branch_length);
+	//			std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction));
+	//			next_branch->set_parent_index(k);
+	//			new_branches.push_back(next_branch);
+	//		}
+	//		branches[k]->reset();
+	//	}
+	//}
+	//branches.insert(branches.end(), new_branches.begin(), new_branches.end());
+}
+	///* Look through branches and find which ones were attractched to which leaves*/
+	//for (int k = num_branches - 1; k >= 0; k--)
+	//{
+	//	//std::cout << k << std::endl;
+	//	std::shared_ptr<Branch> current_branch(branches[k]);
+	//	if (current_branch->get_count() > 0)
+	//	{
+	//		std::cout << current_branch->get_count() << std::endl;
+	//		glm::vec2 old_position = current_branch->get_position();
+	//		glm::vec2 old_direction = current_branch->get_direction();
+	//		current_branch->set_direction(old_direction / current_branch->get_count());
+	//		glm::vec2 new_position = old_position + old_direction;
+	//		std::shared_ptr<Branch> new_branch(new Branch(current_branch, new_position, old_direction));
+	//		branches.push_back(new_branch);
+	//	}
+	//	current_branch->reset();
 
 	void TestTreeSpaceColonisation::SetSeed(int seed)
 	{
