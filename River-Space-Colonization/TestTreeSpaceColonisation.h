@@ -3,6 +3,7 @@
 #include "Include.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "IndexBuffer.h"
 #include "Renderer.h"
@@ -21,6 +22,8 @@ namespace test
 		TestTreeSpaceColonisation();
 		
 		void Grow();
+		void Build();
+		void Draw();
 		void SetSeed(int seed);
 
 		void OnUpdate(float deltaTime) override;
