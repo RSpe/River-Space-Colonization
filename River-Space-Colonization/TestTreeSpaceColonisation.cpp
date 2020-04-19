@@ -14,9 +14,9 @@ namespace test
 
 		int leaves_to_generate = 100;
 
-		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building.
+		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building. **
 
-		std::shared_ptr<Branch> root(new Branch(glm::vec2(NULL, NULL), glm::vec2(300.0f, 0.0f), glm::vec2(0.0f, 1.0f))); // Create root branch, NULL parents, position starting at (0.0f, 0.5), direction of (0.0f, -1.0f) which is pointing upwards.
+		std::shared_ptr<Branch> root(new Branch(glm::vec2(NULL, NULL), glm::vec2(0.0f, -600.0f), glm::vec2(0.0f, 1.0f))); // Create root branch, NULL parents, position starting at (300.0f, 0.0f), direction of (0.0f, 1.0f) which is pointing upwards. **
 
 		branches.push_back(root); // Add root as the first branch object.
 
@@ -127,13 +127,32 @@ namespace test
 
 	void TestTreeSpaceColonisation::Draw() 
 	{
+		std::vector<glm::vec2> leaf_pos;
+		std::vector<glm::vec2> branch_pos;
+
+		for (int i = 0; i < leaves.size(); i++)
+		{
+			glm::vec2 pixel_pos_leaf = (leaves[i].get_position());
+			glm::vec2 con_leaf = glm::vec2(pixel_pos_leaf[0] / 600, pixel_pos_leaf[1] / 600);
+			leaf_pos.push_back(con_leaf);
+		}
+
+		for (int i = 0; i < branches.size(); i++)
+		{
+			glm::vec2 pixel_pos_branch = (branches[i]->get_position());
+			glm::vec2 con_branch = glm::vec2(pixel_pos_branch[0] / 600, pixel_pos_branch[1] / 600);
+			branch_pos.push_back(con_branch);
+		}
+
 		m_VAO = std::make_unique<VertexArray>();
 		
-		m_VertexBuffer = std::make_unique<VertexBuffer>(&(leaves[0].get_position()), leaves.size() * sizeof(glm::vec2));
+		m_VertexBuffer1 = std::make_unique<VertexBuffer>(leaf_pos.data(), leaves.size() * sizeof(glm::vec2));
+		m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_pos.data(), branches.size() * sizeof(glm::vec2));
 
 		VertexBufferLayout layout;
 		layout.Push<float>(2);
-		m_VAO->AddBuffer(*m_VertexBuffer, layout);
+		layout.Push<float>(2);
+		m_VAO->AddBuffer(*m_VertexBuffer1, layout);
 
 		m_Shader = std::make_unique<Shader>("River.shader");
 		m_Shader->Bind();
@@ -148,6 +167,13 @@ namespace test
 
 		GLCall(glPointSize(3));
 		GLCall(glDrawArrays(GL_POINTS, 0, 100));
+
+		m_VAO->AddBuffer(*m_VertexBuffer2, layout);
+
+		m_Shader->Bind();
+		m_VAO->Bind();
+
+		GLCall(glDrawArrays(GL_LINES, 0, 100));
 	}
 
 	void TestTreeSpaceColonisation::SetSeed(int seed)
