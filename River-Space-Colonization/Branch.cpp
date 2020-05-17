@@ -57,6 +57,6 @@ void Branch::increment_count(int count)
 
 void Branch::reset() 
 {
-	this->direction = this->original_direction;
+	set_direction(original_direction);
 	this->counter = 0;
 }

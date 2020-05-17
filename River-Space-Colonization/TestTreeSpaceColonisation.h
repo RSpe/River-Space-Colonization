@@ -30,14 +30,15 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		float max_distance = 150;
-		float min_distance = 10;
-		float branch_length = 7;
+		float max_distance = 200;
+		float min_distance = 20;
+		float branch_length = 10;
 	private:
 
-		//int window_width = 640;
-		//int window_height = 480;
+		int window_width = 600;
+		int window_height = 600;
 		//int branch_direction;
+		bool finish;
 
 		std::vector<glm::vec2> random_leaves;
 		std::vector<Leaf> leaves;
@@ -45,7 +46,8 @@ namespace test
 		std::vector<std::shared_ptr<Branch>> branches;
 
 		std::unique_ptr<VertexArray> m_VAO;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer1;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer2;
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	};
