@@ -31,7 +31,7 @@ namespace test
 		void OnImGuiRender() override;
 
 		float max_distance = 200;
-		float min_distance = 20;
+		float min_distance = 10;
 		float branch_length = 10;
 	private:
 
