@@ -6,6 +6,7 @@ namespace test
 	TestTreeSpaceColonisation::TestTreeSpaceColonisation()
 	{
 		Build();
+		//Grow();
 	}
 
 	void TestTreeSpaceColonisation::Build()
@@ -14,7 +15,7 @@ namespace test
 
 		finish = false;
 
-		int leaves_to_generate = 1000;
+		int leaves_to_generate = 100;
 
 		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building. **
 
@@ -82,7 +83,7 @@ namespace test
 		if (finish == false)
 		{
 			//std::cout << leaves.size() << std::endl;
-			if (leaves.size() == 1)
+			if (leaves.size() == 0)
 			{
 				finish = true;
 				//std::cout << "finished" << std::endl;
@@ -266,10 +267,6 @@ namespace test
 	{
 		Grow();
 		Draw();
-		//if (finish == true)
-		//{
-		//	Draw();
-		//}
 	}
 
 	void TestTreeSpaceColonisation::OnImGuiRender()
