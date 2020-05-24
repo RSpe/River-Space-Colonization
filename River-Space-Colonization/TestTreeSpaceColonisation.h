@@ -21,10 +21,12 @@ namespace test
 	public:
 		TestTreeSpaceColonisation();
 		
-		void Grow();
 		void Build();
+		void Ridges();
+
+		void Grow();
 		void Draw();
-		void SetSeed(int seed);
+		//void SetSeed(int seed);
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
@@ -33,6 +35,10 @@ namespace test
 		float max_distance = 200;
 		float min_distance = 10;
 		float branch_length = 10;
+		int tree_number = 4;
+
+		float root_array[8] = { 0.0f, -600.0f, 0.0f, 600.0f, -600.0f, 0.0f, 600.0f, 0.0f };
+
 	private:
 
 		int window_width = 600;

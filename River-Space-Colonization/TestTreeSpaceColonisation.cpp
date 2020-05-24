@@ -6,73 +6,84 @@ namespace test
 	TestTreeSpaceColonisation::TestTreeSpaceColonisation()
 	{
 		Build();
+		Ridges();
 		//Grow();
 	}
 
 	void TestTreeSpaceColonisation::Build()
 	{
-		//std::cout << "--------------Build-------------" << std::endl;
-
-		finish = false;
-
-		int leaves_to_generate = 100;
-
-		random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building. **
-
-		std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, -600.0f), glm::vec2(0.0f, -600.0f), glm::vec2(0.0f, 1.0f))); // Create root branch, NULL parents, position starting at (300.0f, 0.0f), direction of (0.0f, 1.0f) which is pointing upwards. **
-
-		branches.push_back(root); // Add root as the first branch object.
-
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
-		for (int i = 0; i < leaves_to_generate; i++)
+		for (int i = 0; i < tree_number; i++)
 		{
-			leaves.push_back(Leaf(random_leaves[i])); // Add a leaf object to the leaves vector for all randomly generate leaf points.
-		}
+			//std::cout << "--------------Build-------------" << std::endl;
+			int root_position = i * 2;
 
-		bool found = false;
-		std::shared_ptr<Branch> current = root;
+			finish = false;
+			int leaves_to_generate = 200;
 
-		while (!found)
-		{
-			/* Checking if the root is close enough to any leaves so it can begin growing towards them. */
-			for (int j = 0; j < leaves_to_generate; j++)
+			random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, 1); // Generate random 2D points as leaves used for unique branch building. **
+
+			std::cout << root_array[i] << root_array[i + 1] << std::endl;
+			std::shared_ptr<Branch> root(new Branch(glm::vec2(root_array[root_position], root_array[root_position + 1]), glm::vec2(root_array[root_position], root_array[root_position + 1]), glm::vec2(0.0f, 1.0f))); // Create root branch, itself as its parent, position starting at (0.0f, -600.0f), direction of (0.0f, 1.0f) which is pointing upwards. **
+
+			branches.push_back(root); // Add root as the first branch object.`
+
+			GLCall(glEnable(GL_BLEND));
+			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+			for (int i = 0; i < leaves_to_generate; i++)
 			{
-				float distance = glm::distance(current->get_position(), leaves[j].get_position());
-				if (distance < max_distance) // Found branch to moved toward, end while loop.
+				leaves.push_back(Leaf(random_leaves[i])); // Add a leaf object to the leaves vector for all randomly generate leaf points.
+			}
+
+			bool found = false;
+			std::shared_ptr<Branch> current = root;
+
+			while (!found)
+			{
+				/* Checking if the root is close enough to any leaves so it can begin growing towards them. */
+				for (int j = 0; j < leaves_to_generate; j++)
 				{
-					//std::cout << distance << std::endl;
-					//std::cout << glm::to_string(current->get_position()) << std::endl;
-					//std::cout << glm::to_string(leaves[j].get_position()) << std::endl;
-					found = true;
+					float distance = glm::distance(current->get_position(), leaves[j].get_position());
+					if (distance < max_distance) // Found branch to moved toward, end while loop.
+					{
+						//std::cout << distance << std::endl;
+						//std::cout << glm::to_string(current->get_position()) << std::endl;
+						//std::cout << glm::to_string(leaves[j].get_position()) << std::endl;
+						found = true;
+					}
+				}
+				/* Create a branch off the root branch that starts at the end of the root branch and extends the same distance upwards. This step we are growing the tree in hope we find a leaf close enough to move towards. */
+				if (!found && !branches.empty())
+				{
+					//std::cout << "check" << std::endl;
+					//std::cout << glm::to_string(current->get_direction()) << std::endl;
+					glm::vec2 parent_direction = current->get_direction();
+					glm::vec2 parent_position = branches.back()->get_position();
+					//std::cout << glm::to_string(parent_position) << std::endl;
+					glm::vec2 new_direction = parent_direction;
+					glm::vec2 new_position = parent_position + (new_direction * branch_length);
+					//std::cout << glm::to_string(new_position) << std::endl;
+					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction));
+					int parent_index = branches.size() - 1;
+					//std::cout << glm::to_string(next_branch->get_parent()) << std::endl;
+					next_branch->set_parent_index(parent_index);
+					//std::cout << glm::to_string(next_branch->get_parent()) << std::endl;
+					//std::cout << glm::to_string(next_branch->get_position()) << std::endl;
+					branches.push_back(next_branch);
+					current = branches.back();
 				}
 			}
-			/* Create a branch off the root branch that starts at the end of the root branch and extends the same distance upwards. This step we are growing the tree in hope we find a leaf close enough to move towards. */
-			if (!found && !branches.empty())
-			{
-				//std::cout << "check" << std::endl;
-				//std::cout << glm::to_string(current->get_direction()) << std::endl;
-				glm::vec2 parent_direction = current->get_direction();
-				glm::vec2 parent_position = branches.back()->get_position();
-				//std::cout << glm::to_string(parent_position) << std::endl;
-				glm::vec2 new_direction = parent_direction;
-				glm::vec2 new_position = parent_position + (new_direction * branch_length);
-				//std::cout << glm::to_string(new_position) << std::endl;
-				std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction));
-				int parent_index = branches.size() - 1;
-				//std::cout << glm::to_string(next_branch->get_parent()) << std::endl;
-				next_branch->set_parent_index(parent_index);
-				//std::cout << glm::to_string(next_branch->get_parent()) << std::endl;
-				//std::cout << glm::to_string(next_branch->get_position()) << std::endl;
-				branches.push_back(next_branch);
-				current = branches.back();
-			}
+			//for (int i = 0; i < branches.size(); i++)
+			//{
+			//	std::cout << glm::to_string(branches[i]->get_position()) << std::endl;
+			//}
 		}
-		//for (int i = 0; i < branches.size(); i++)
-		//{
-		//	std::cout << glm::to_string(branches[i]->get_position()) << std::endl;
-		//}
+		
+	}
+
+	void TestTreeSpaceColonisation::Ridges()
+	{
+
 	}
 
 	void TestTreeSpaceColonisation::Grow()
@@ -253,10 +264,10 @@ namespace test
 
 	}
 
-	void TestTreeSpaceColonisation::SetSeed(int seed)
-	{
-		//given_seed = seed;
-	}
+	//void TestTreeSpaceColonisation::SetSeed(int seed)
+	//{
+	//	given_seed = seed;
+	//}
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
 	{
