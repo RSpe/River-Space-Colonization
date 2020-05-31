@@ -165,6 +165,7 @@
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LeafGeneration.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RidgeGeneration.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TestTreeSpaceColonisation.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LeafGeneration.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RidgeGeneration.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TestTreeSpaceColonisation.h" />
     <ClInclude Include="stb_image.h" />
