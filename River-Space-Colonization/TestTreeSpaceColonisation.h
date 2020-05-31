@@ -10,8 +10,9 @@
 
 #include "Test.h"
 
-#include "Leaf.h"
 #include "LeafGeneration.h"
+#include "RidgeGeneration.h"
+#include "Leaf.h"
 #include "Branch.h"
 
 namespace test
@@ -22,7 +23,7 @@ namespace test
 		TestTreeSpaceColonisation();
 		
 		void Build();
-		void Ridges();
+		void Ridge();
 
 		void Grow();
 		void Draw();
@@ -32,12 +33,14 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		float max_distance = 200;
+		float max_distance = 600 * 600;
 		float min_distance = 10;
 		float branch_length = 10;
 		int tree_number = 4;
+		//int tree_number = 2;
 
 		float root_array[8] = { 0.0f, -600.0f, 0.0f, 600.0f, -600.0f, 0.0f, 600.0f, 0.0f };
+		//float root_array[4] = { 0.0f, -600.0f, 600.0f, 0.0f };
 
 	private:
 
@@ -47,6 +50,8 @@ namespace test
 		bool finish;
 
 		std::vector<glm::vec2> random_leaves;
+		std::vector<glm::vec2> random_ridges;
+		std::vector<glm::vec2> ridges;
 		std::vector<Leaf> leaves;
 		//std::vector<float> position;
 		std::vector<std::shared_ptr<Branch>> branches;
@@ -54,6 +59,7 @@ namespace test
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer2;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer3;
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 	};
