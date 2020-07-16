@@ -11,7 +11,6 @@
 #include "Test.h"
 
 #include "LeafGeneration.h"
-#include "RootGeneration.h"
 #include "RidgeGeneration.h"
 #include "Leaf.h"
 #include "Branch.h"
@@ -36,7 +35,7 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int leaves_to_generate = 150;
+		int leaves_to_generate = 50;
 
 		float max_distance = 100;
 		float min_distance = 0.01;
@@ -47,8 +46,12 @@ namespace test
 		float max_y_point = 500;
 		int tree_number = 2;
 		int ridge_number = 3;
-		int ridge_definition = 7;
-		double set_seed = 100;
+		int ridge_definition = 4;
+		double set_seed = 1000000;
+
+		int check_leaf_change = 0;
+		int check_branch_change = 0;
+		int no_change_count = 0;
 
 	private:
 

@@ -99,9 +99,6 @@
     <ClCompile Include="RidgeGeneration.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
-    <ClCompile Include="RootGeneration.cpp">
-      <Filter>Source Files\SpaceColonisation</Filter>
-    </ClCompile>
     <ClCompile Include="CheckIntersection.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
@@ -183,9 +180,6 @@
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
     <ClInclude Include="RidgeGeneration.h">
-      <Filter>Source Files\SpaceColonisation</Filter>
-    </ClInclude>
-    <ClInclude Include="RootGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
