@@ -11,19 +11,22 @@
 #include "Test.h"
 
 #include "LeafGeneration.h"
+#include "RootGeneration.h"
 #include "RidgeGeneration.h"
 #include "Leaf.h"
 #include "Branch.h"
+#include "CheckIntersection.h"
 
 namespace test
 {
 	class TestTreeSpaceColonisation : public Test
 	{
 	public:
+
 		TestTreeSpaceColonisation();
 		
 		void Build();
-		void Ridge();
+		//void Ridge();
 
 		void Grow();
 		void Draw();
@@ -33,28 +36,36 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		float max_distance = 600 * 600;
-		float min_distance = 10;
-		float branch_length = 10;
-		int tree_number = 4;
-		//int tree_number = 2;
+		int leaves_to_generate = 150;
 
-		float root_array[8] = { 0.0f, -600.0f, 0.0f, 600.0f, -600.0f, 0.0f, 600.0f, 0.0f };
-		//float root_array[4] = { 0.0f, -600.0f, 600.0f, 0.0f };
+		float max_distance = 100;
+		float min_distance = 0.01;
+		float branch_length = 0.02;
+		float min_x_point = -500;
+		float max_x_point = 500;
+		float min_y_point = -500;
+		float max_y_point = 500;
+		int tree_number = 2;
+		int ridge_number = 3;
+		int ridge_definition = 7;
+		double set_seed = 100;
 
 	private:
 
 		int window_width = 600;
 		int window_height = 600;
-		//int branch_direction;
+
 		bool finish;
 
 		std::vector<glm::vec2> random_leaves;
-		std::vector<glm::vec2> random_ridges;
+		std::vector<glm::vec2> random_roots;
+		std::vector<std::vector<glm::vec2>> random_ridges;
+		std::vector<glm::vec2> random_ridges_1d;
 		std::vector<glm::vec2> ridges;
 		std::vector<Leaf> leaves;
-		//std::vector<float> position;
 		std::vector<std::shared_ptr<Branch>> branches;
+		
+		std::vector<glm::vec2> branch_pos;
 
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;
