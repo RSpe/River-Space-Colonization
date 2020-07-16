@@ -243,6 +243,10 @@ namespace test
 				leaf_pos.push_back(pixel_pos_leaf);
 			}
 		}
+		else 
+		{
+			leaf_pos = {};
+		}
 
 		if (branch_position_length != branch_storage_length)
 		{

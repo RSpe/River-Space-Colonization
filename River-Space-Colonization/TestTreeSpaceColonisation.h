@@ -35,7 +35,7 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int leaves_to_generate = 50;
+		int leaves_to_generate = 150;
 
 		float max_distance = 100;
 		float min_distance = 0.01;
