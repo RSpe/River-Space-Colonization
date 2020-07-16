@@ -88,7 +88,6 @@ namespace test
 				}
 			}
 		}
-		//Grow();
 	}
 
 	void TestTreeSpaceColonisation::Grow()
@@ -210,78 +209,88 @@ namespace test
 
 	void TestTreeSpaceColonisation::Draw() 
 	{
-		//if (finish == true)
-		//{
+		int leaf_storage_length = leaves.size(); // Used to check if there is no more leaves to show.
+		std::vector<glm::vec2> leaf_pos;
 
-			int leaf_storage_length = leaves.size(); // Used to check if there is no more leaves to show.
-			std::vector<glm::vec2> leaf_pos;
+		int branch_storage_length = branches.size();
+		int branch_position_length = branch_pos.size() / 2; // There is double the amount of branch positions stored as we need to store the parent and current point so a line can be drawn between the two.
 
-			if (leaf_storage_length != 0)
+		if (check_leaf_change != leaf_storage_length || check_branch_change != branch_storage_length)
+		{
+			check_leaf_change = leaf_storage_length;
+			check_branch_change = branch_storage_length;
+			no_change_count = 0;
+		}
+
+		else if (check_leaf_change == leaf_storage_length && check_branch_change == branch_storage_length)
+		{
+			if (no_change_count == 5)
 			{
-				for (int i = 0; i < leaf_storage_length; ++i)
-				{
-					//std::cout << leaves.size() << std::endl;
-					glm::vec2 pixel_pos_leaf = (leaves[i].get_position());
-					leaf_pos.push_back(pixel_pos_leaf);
-				}
+				finish = true;
 			}
-
-			int branch_storage_length = branches.size();
-			int branch_position_length = branch_pos.size() / 2; // There is double the amount of branch positions stored as we need to store the parent and current point so a line can be drawn between the two.
-
-			if (branch_position_length != branch_storage_length)
+			else
 			{
-				for (int j = branch_position_length; j < branch_storage_length; ++j)
-				{
-					glm::vec2 pixel_pos_branch = (branches[j]->get_position());
-					glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
-					branch_pos.push_back(pixel_pos_branch);
-					branch_pos.push_back(pixel_pos_parent);
-				}
+				no_change_count += 1;
 			}
+		}
 
-			m_VAO = std::make_unique<VertexArray>();
-
-			m_VertexBuffer1 = std::make_unique<VertexBuffer>(leaf_pos.data(), leaf_pos.size() * sizeof(glm::vec2));
-			m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_pos.data(), branch_pos.size() * sizeof(glm::vec2));
-
-			VertexBufferLayout layout1;
-
-			layout1.Push<float>(2);
-
-			m_VAO->AddBuffer(*m_VertexBuffer1, layout1);
-
-			m_Shader = std::make_unique<Shader>("River.shader");
-			m_Shader->Bind();
-			/* Have to call uniforms after a shader is bound */
-			m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
-
-			GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			GLCall(glPointSize(3));
-			GLCall(glDrawArrays(GL_POINTS, 0, leaf_pos.size()));
-
-			for (int m = 0; m < random_ridges.size(); m++)
+		if (leaf_storage_length != 0 && finish != true)
+		{
+			for (int i = 0; i < leaf_storage_length; ++i)
 			{
-				m_VertexBuffer3 = std::make_unique<VertexBuffer>(random_ridges[m].data(), random_ridges[m].size() * sizeof(glm::vec2));
-				m_VAO->AddBuffer(*m_VertexBuffer3, layout1);
-				m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
-
-				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
+				//std::cout << leaves.size() << std::endl;
+				glm::vec2 pixel_pos_leaf = (leaves[i].get_position());
+				leaf_pos.push_back(pixel_pos_leaf);
 			}
+		}
 
-			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			m_Shader->SetUniform4f("u_Color", 0.0f, 0.003f, 0.439f, 1.0f);
+		if (branch_position_length != branch_storage_length)
+		{
+			for (int j = branch_position_length; j < branch_storage_length; ++j)
+			{
+				glm::vec2 pixel_pos_branch = (branches[j]->get_position());
+				glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
+				branch_pos.push_back(pixel_pos_branch);
+				branch_pos.push_back(pixel_pos_parent);
+			}
+		}
 
-			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
-		//}
+		m_VAO = std::make_unique<VertexArray>();
+
+		m_VertexBuffer1 = std::make_unique<VertexBuffer>(leaf_pos.data(), leaf_pos.size() * sizeof(glm::vec2));
+		m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_pos.data(), branch_pos.size() * sizeof(glm::vec2));
+
+		VertexBufferLayout layout1;
+
+		layout1.Push<float>(2);
+
+		m_VAO->AddBuffer(*m_VertexBuffer1, layout1);
+
+		m_Shader = std::make_unique<Shader>("River.shader");
+		m_Shader->Bind();
+		/* Have to call uniforms after a shader is bound */
+		m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
+
+		GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		GLCall(glPointSize(3));
+		GLCall(glDrawArrays(GL_POINTS, 0, leaf_pos.size()));
+
+		for (int m = 0; m < random_ridges.size(); m++)
+		{
+			m_VertexBuffer3 = std::make_unique<VertexBuffer>(random_ridges[m].data(), random_ridges[m].size() * sizeof(glm::vec2));
+			m_VAO->AddBuffer(*m_VertexBuffer3, layout1);
+			m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
+
+			GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
+		}
+
+		m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
+		m_Shader->SetUniform4f("u_Color", 0.0f, 0.003f, 0.439f, 1.0f);
+
+		GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 	}
-
-	//void TestTreeSpaceColonisation::SetSeed(int seed)
-	//{
-	//	given_seed = seed;
-	//}
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
 	{
