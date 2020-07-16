@@ -114,8 +114,6 @@ namespace test
 					glm::vec2 current_branch_position = branches[j]->get_position();
 					glm::vec2 current_leaf_pos = leaves[i].get_position();
 
-					//std::cout << random_ridges_1d.size() << " " << ridge_number * ridge_definition << std::endl;
-
 					for (double j = 0; j < random_ridges_1d.size(); ++j)
 					{
 						if (j == 0)
@@ -135,9 +133,6 @@ namespace test
 								((current_branch_position[0] - current_leaf_pos[0]) * (random_ridges_1d[j][1] - random_ridges_1d[j - 1][1]) - (current_branch_position[1] - current_leaf_pos[1]) * (random_ridges_1d[j][0] - random_ridges_1d[j - 1][0]));
 							float check_intersect_u = (((current_branch_position[0] - current_leaf_pos[0]) * (current_branch_position[1] - random_ridges_1d[j][1]) - (current_branch_position[1] - current_leaf_pos[1]) * (current_branch_position[0] - random_ridges_1d[j][0])) /
 								((current_branch_position[0] - current_leaf_pos[0]) * (random_ridges_1d[j][1] - random_ridges_1d[j - 1][1]) - (current_branch_position[1] - current_leaf_pos[1]) * (random_ridges_1d[j][0] - random_ridges_1d[j - 1][0])) * -1);
-							//bool check = CheckIntersection::check_intersection(current_branch_position, current_leaf_pos, random_ridges_1d[j], random_ridges_1d[j + 1]);
-							//if (check == true)
-							//std::cout << glm::to_string(random_ridges_1d[j]) << " " << glm::to_string(random_ridges_1d[j + 1]) << std::endl;
 							if (check_intersect_t >= 0 && check_intersect_t <= 1 && check_intersect_u >= 0 && check_intersect_u <= 1)
 							{
 								skip = true;
@@ -147,37 +142,8 @@ namespace test
 
 					if (skip == true)
 					{
-						//std::cout << skip << std::endl;
 						continue;
 					}
-
-					//bool skip = false;
-
-					//for (double j = 0; j < random_ridges_1d.size(); ++j)
-					//{
-					//	if (j == 0)
-					//	{
-					//		bool check = CheckIntersection::check_intersection(current_branch_position, current_leaf_pos, random_ridges_1d[j], random_ridges_1d[j + 1]);
-					//		//std::cout << check << std::endl;
-					//		if (check == true)
-					//		{
-					//			skip = true;
-					//		}
-					//	}
-					//	else
-					//	{
-					//		bool check = CheckIntersection::check_intersection(current_branch_position, current_leaf_pos, random_ridges_1d[j], random_ridges_1d[j - 1]);
-					//		if (check == true)
-					//		{
-					//			skip = true;
-					//		}
-					//	}
-					//}
-
-					//if (skip == true)
-					//{
-					//	continue;
-					//}
 
 					float distance = glm::distance(leaves[i].get_position(), current_branch_position);
 
