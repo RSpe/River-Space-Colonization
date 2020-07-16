@@ -14,7 +14,6 @@
 #include "RidgeGeneration.h"
 #include "Leaf.h"
 #include "Branch.h"
-#include "CheckIntersection.h"
 
 namespace test
 {
