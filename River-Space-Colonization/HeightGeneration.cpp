@@ -27,30 +27,6 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 	//		std::cout << pbo << std::endl;
 	//	}
 	//}
-
-	int pbo0;
-	int pbo1;
-
-	// set the target framebuffer to read
-	glReadBuffer(GL_FRONT);
-
-	// read pixels from framebuffer to PBO
-	// glReadPixels() should return immediately.
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo0);
-	glReadPixels(0, 0, 10, 10, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
-	// map the PBO to process its data by CPU
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo1);
-	GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
-	if (ptr)
-	{
-		std::cout << ptr << std::endl;
-		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-	}
-
-	// back to conventional pixel operation
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
-
 	//for (int y = 0; y < window_height - 50; ++y)
 	//{
 	//	for (int x = 0; x < window_width - 50; ++x)
@@ -72,6 +48,28 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 	//		//}
 	//	}
 	//}
+	//unsigned int fbo;
+	//glGenFramebuffers(1, &fbo);
+	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
+	glReadBuffer(GL_FRONT);
+
+	GLfloat pixels[50][50][3];
+	glReadPixels(0, 0, 50, 50, GL_RGB, GL_FLOAT, &pixels);
+
+	for (int i = 0; i < 50; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			if (j < 49)
+			{
+				std::cout << pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2] << " ";
+			}
+			else
+			{
+				std::cout << pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2] << std::endl;
+			}
+		}
+	}
 	return height_map;
 }

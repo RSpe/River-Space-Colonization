@@ -297,10 +297,10 @@ namespace test
 				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
 			}
 
-			//m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			//m_Shader->SetUniform4f("u_Color", 0.0f, 1.0f, 0.5f, 1.0f);
+			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
+			m_Shader->SetUniform4f("u_Color", 0.0f, 1.0f, 0.5f, 1.0f);
 
-			//GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
+			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 		}
 		else if (finish == true && height_enable_count == 1)
 		{
@@ -326,8 +326,9 @@ namespace test
 			//		}
 			//	}
 			//}
-			GLCall(glPointSize(1));
-			glDrawArrays(GL_POINTS, 0, height_map.size());
+
+			//GLCall(glPointSize(1));
+			//glDrawArrays(GL_POINTS, 0, height_map.size());
 
 			height_enable_count += 1;
 
