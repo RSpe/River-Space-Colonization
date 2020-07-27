@@ -76,8 +76,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Reuben\Documents\OpenGL\Dependencies\GLFW\include;C:\Users\Reuben\Documents\OpenGL\Dependencies\glad\include;C:\Users\Reuben\Documents\OpenGL\Dependencies\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Reuben\Documents\OpenGL\Dependencies\GLFW\lib-vc2019;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\rspe862\Documents\OpenGL\Dependencies;C:\Users\rspe862\Documents\OpenGL\Dependencies\glad\include;C:\Users\rspe862\Documents\OpenGL\Dependencies\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\rspe862\Documents\OpenGL\Dependencies\GLFW\lib-vc2019;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -157,7 +157,6 @@
   <ItemGroup>
     <ClCompile Include="Branch.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="HeightGeneration.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -181,7 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
-    <ClInclude Include="HeightGeneration.h" />
     <ClInclude Include="imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="imgui\examples\imgui_impl_opengl3.h" />
     <ClInclude Include="imgui\imconfig.h" />
