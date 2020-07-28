@@ -57,12 +57,12 @@ namespace test
 
 	private:
 
-		static const int window_width = 100;
-		static const int window_height = 100;
+		static const int window_width = 600;
+		static const int window_height = 600;
 
 		bool finish;
 
-		std::vector<float> height_map;
+		std::vector<glm::vec2> height_map;
 		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;

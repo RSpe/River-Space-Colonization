@@ -1,12 +1,12 @@
 #include "HeightGeneration.h"
 
-const std::vector<float> HeightGeneration::create_base_heights(int window_width, int window_height)
+const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point)
 {
 	//unsigned int pbo;
 
 	//glGenBuffers(1, &pbo);
 
-	std::vector<float> height_map;
+	std::vector<glm::vec2> height_map;
 	//GLenum *hello[1000];
 
 	//int count_255 = 0;
@@ -54,22 +54,35 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 
 	glReadBuffer(GL_FRONT);
 
-	GLfloat pixels[50][50][3];
-	glReadPixels(0, 0, 50, 50, GL_RGB, GL_FLOAT, &pixels);
+	int pixels_read = 1;
 
-	for (int i = 0; i < 50; i++)
+	GLfloat pixels[50][50][3];
+	glReadPixels(0, 0, 50, 50, GL_RED, GL_FLOAT, &pixels);
+
+	std::cout << sizeof(pixels) << std::endl;
+	int count_y = 0;
+	int count_x = 1;
+
+	for (float i = -1; i < 1; i += (2.0 / 600.0))
 	{
-		for (int j = 0; j < 50; j++)
+		count_y += 1;
+		for (float j = -1; j < 1; j += (2.0 / 600.0))
 		{
-			if (j < 49)
+			if (count_x != 50)
 			{
-				std::cout << pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2] << " ";
+				count_x += 1;
 			}
 			else
 			{
-				std::cout << pixels[i][j][0] + pixels[i][j][1] + pixels[i][j][2] << std::endl;
+				count_x = 1;
+			}
+			if (pixels[count_y][count_x][0] != 1.0)
+			{
+				height_map.push_back(glm::vec2(j, i));
 			}
 		}
 	}
+
+
 	return height_map;
 }

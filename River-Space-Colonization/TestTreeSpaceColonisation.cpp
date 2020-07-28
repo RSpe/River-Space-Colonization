@@ -15,6 +15,7 @@ namespace test
 		float clip_space_width_boundary = window_width / window_width;
 		float clip_space_height_boundary = window_height / window_height;
 
+
 		float clip_space_min_x = min_x_point / window_width;
 		float clip_space_max_x = max_x_point / window_width;
 		float clip_space_min_y = min_y_point / window_height;
@@ -292,13 +293,13 @@ namespace test
 			{
 				m_VertexBuffer3 = std::make_unique<VertexBuffer>(random_ridges[m].data(), random_ridges[m].size() * sizeof(glm::vec2));
 				m_VAO->AddBuffer(*m_VertexBuffer3, layout1);
-				m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
+				m_Shader->SetUniform4f("u_Color", 0.9f, 0.0f, 0.0f, 1.0f);
 
 				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
 			}
 
 			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			m_Shader->SetUniform4f("u_Color", 0.01f, 1.0f, 0.5f, 1.0f);
+			m_Shader->SetUniform4f("u_Color", 0.0f, 1.0f, 0.5f, 1.0f);
 
 			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 		}
@@ -307,7 +308,7 @@ namespace test
 			HeightGeneration height_generation;
 			//glGenFramebuffers(1, frame_buffer);
 			//glBindFramebuffer(GL_PIXEL_PACK_BUFFER, *frame_buffer);
-			height_map = height_generation.create_base_heights(window_width, window_height);
+			height_map = height_generation.create_base_heights(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point);
 			//m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(float));
 			//m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
 			//m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
@@ -330,12 +331,23 @@ namespace test
 			//GLCall(glPointSize(1));
 			//glDrawArrays(GL_POINTS, 0, height_map.size());
 
+			//for (int i = 0; i < height_map.size(); ++i)
+			//{
+			//	std::cout << glm::to_string(height_map[i]) << std::endl;
+			//}
+
 			height_enable_count += 1;
 
 			//std::cout << height_map.size() << std::endl;
 		}
 		else
 		{
+			GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
+			m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
+			m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
+			GLCall(glPointSize(1));
 			glDrawArrays(GL_POINTS, 0, height_map.size());
 		}
 	}
