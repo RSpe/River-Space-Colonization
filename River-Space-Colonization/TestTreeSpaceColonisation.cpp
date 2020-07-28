@@ -298,7 +298,7 @@ namespace test
 			}
 
 			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			m_Shader->SetUniform4f("u_Color", 0.0f, 1.0f, 0.5f, 1.0f);
+			m_Shader->SetUniform4f("u_Color", 0.01f, 1.0f, 0.5f, 1.0f);
 
 			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 		}

@@ -76,8 +76,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\rspe862\Documents\OpenGL\Dependencies;C:\Users\rspe862\Documents\OpenGL\Dependencies\glad\include;C:\Users\rspe862\Documents\OpenGL\Dependencies\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\rspe862\Documents\OpenGL\Dependencies\GLFW\lib-vc2019;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Dependencies\;..\Dependencies\glad\include;..\Dependencies\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Dependencies\GLFW\lib-vc2019;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
