@@ -14,6 +14,7 @@
 #include "RidgeGeneration.h"
 #include "Leaf.h"
 #include "Branch.h"
+#include "HeightGeneration.h"
 
 namespace test
 {
@@ -34,19 +35,21 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int leaves_to_generate = 150;
+		int leaves_to_generate = 25;
 
 		float max_distance = 100;
 		float min_distance = 0.01;
 		float branch_length = 0.02;
-		float min_x_point = -500;
-		float max_x_point = 500;
-		float min_y_point = -500;
-		float max_y_point = 500;
+		float min_x_point = -50;
+		float max_x_point = 50;
+		float min_y_point = -50;
+		float max_y_point = 50;
 		int tree_number = 2;
 		int ridge_number = 3;
 		int ridge_definition = 4;
-		double set_seed = 1000000;
+		double set_seed = 1000000000;
+
+		int height_enable_count = 0;
 
 		int check_leaf_change = 0;
 		int check_branch_change = 0;
@@ -54,10 +57,13 @@ namespace test
 
 	private:
 
-		int window_width = 600;
-		int window_height = 600;
+		static const int window_width = 600;
+		static const int window_height = 600;
 
 		bool finish;
+
+		std::vector<glm::vec2> height_map;
+		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;
 		std::vector<glm::vec2> random_roots;
@@ -73,7 +79,10 @@ namespace test
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer2;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer3;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer4;
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+
+		//std::vector<float> height_map;
 	};
 }
