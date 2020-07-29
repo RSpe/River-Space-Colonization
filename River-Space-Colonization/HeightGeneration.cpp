@@ -65,13 +65,13 @@ const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_wi
 	//int count_y = 0;
 	//int count_x = 1;
 
-	for (int i = max_y_point - 1; i > 0 ; --i)
+	for (int i = max_y_point - 1; i > -1; --i)
 	{
 		for (int j = 0; j < max_x_point; ++j)
 		{
 			if (j < max_x_point - 1)
 			{
-				std::cout << pixels[i][j - 1][0] << " ";
+				std::cout << pixels[i][j][0] << " ";
 			}
 			else
 			{
