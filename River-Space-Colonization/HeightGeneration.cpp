@@ -54,32 +54,30 @@ const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_wi
 
 	glReadBuffer(GL_FRONT);
 
-	int pixels_read = 1;
-
 	GLfloat pixels[50][50][3];
-	glReadPixels(0, 0, 50, 50, GL_RED, GL_FLOAT, &pixels);
 
-	std::cout << sizeof(pixels) << std::endl;
-	int count_y = 0;
-	int count_x = 1;
+	int read_point_x = (window_width / 2) - (max_x_point / 2);
+	int read_point_y = (window_height / 2) - (max_y_point / 2);
 
-	for (float i = -1; i < 1; i += (2.0 / 600.0))
+	glReadPixels(read_point_x, read_point_y, max_x_point, max_y_point, GL_RGB, GL_FLOAT, &pixels);
+
+	//std::cout << sizeof(pixels) / sizeof(float) << std::endl;
+	//int count_y = 0;
+	//int count_x = 1;
+
+	for (int i = max_y_point - 1; i > 0 ; --i)
 	{
-		count_y += 1;
-		for (float j = -1; j < 1; j += (2.0 / 600.0))
+		for (int j = 0; j < max_x_point; ++j)
 		{
-			if (count_x != 50)
+			if (j < max_x_point - 1)
 			{
-				count_x += 1;
+				std::cout << pixels[i][j - 1][0] << " ";
 			}
 			else
 			{
-				count_x = 1;
+				std::cout << pixels[i][j][0] << std::endl;
 			}
-			if (pixels[count_y][count_x][0] != 1.0)
-			{
-				height_map.push_back(glm::vec2(j, i));
-			}
+			
 		}
 	}
 

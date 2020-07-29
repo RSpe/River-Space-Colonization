@@ -214,7 +214,7 @@ namespace test
 		VertexBufferLayout layout1;
 
 		layout1.Push<float>(2);
-		if (height_enable_count == 0)
+		if (height_enable_count == 0 || height_enable_count > 0)
 		{
 			int leaf_storage_length = leaves.size(); // Used to check if there is no more leaves to show.
 			std::vector<glm::vec2> leaf_pos;
@@ -293,7 +293,7 @@ namespace test
 			{
 				m_VertexBuffer3 = std::make_unique<VertexBuffer>(random_ridges[m].data(), random_ridges[m].size() * sizeof(glm::vec2));
 				m_VAO->AddBuffer(*m_VertexBuffer3, layout1);
-				m_Shader->SetUniform4f("u_Color", 0.9f, 0.0f, 0.0f, 1.0f);
+				m_Shader->SetUniform4f("u_Color", 0.0f, 0.0f, 0.0f, 1.0f);
 
 				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
 			}
@@ -302,54 +302,55 @@ namespace test
 			m_Shader->SetUniform4f("u_Color", 0.0f, 1.0f, 0.5f, 1.0f);
 
 			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
+			if (finish == true && height_enable_count == 1)
+			{
+				HeightGeneration height_generation;
+				//glGenFramebuffers(1, frame_buffer);
+				//glBindFramebuffer(GL_PIXEL_PACK_BUFFER, *frame_buffer);
+				height_map = height_generation.create_base_heights(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point);
+				//m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(float));
+				//m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
+				//m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
+
+				//for (int n = 1; n < window_height - 50; ++n)
+				//{
+				//	for (int m = 1; m < window_width - 50; ++m)
+				//	{
+				//		if (m != window_width - 50)
+				//		{
+				//			std::cout << height_map[n * m] << " ";
+				//		}
+				//		else
+				//		{
+				//			std::cout << height_map[n * m] << std::endl;
+				//		}
+				//	}
+				//}
+
+				//GLCall(glPointSize(1));
+				//glDrawArrays(GL_POINTS, 0, height_map.size());
+
+				//for (int i = 0; i < height_map.size(); ++i)
+				//{
+				//	std::cout << glm::to_string(height_map[i]) << std::endl;
+				//}
+
+				height_enable_count += 1;
+
+				//std::cout << height_map.size() << std::endl;
+			}
 		}
-		else if (finish == true && height_enable_count == 1)
-		{
-			HeightGeneration height_generation;
-			//glGenFramebuffers(1, frame_buffer);
-			//glBindFramebuffer(GL_PIXEL_PACK_BUFFER, *frame_buffer);
-			height_map = height_generation.create_base_heights(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point);
-			//m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(float));
-			//m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
-			//m_Shader->SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
 
-			//for (int n = 1; n < window_height - 50; ++n)
-			//{
-			//	for (int m = 1; m < window_width - 50; ++m)
-			//	{
-			//		if (m != window_width - 50)
-			//		{
-			//			std::cout << height_map[n * m] << " ";
-			//		}
-			//		else
-			//		{
-			//			std::cout << height_map[n * m] << std::endl;
-			//		}
-			//	}
-			//}
-
-			//GLCall(glPointSize(1));
-			//glDrawArrays(GL_POINTS, 0, height_map.size());
-
-			//for (int i = 0; i < height_map.size(); ++i)
-			//{
-			//	std::cout << glm::to_string(height_map[i]) << std::endl;
-			//}
-
-			height_enable_count += 1;
-
-			//std::cout << height_map.size() << std::endl;
-		}
-		else
-		{
-			GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
-			m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
-			m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
-			GLCall(glPointSize(1));
-			glDrawArrays(GL_POINTS, 0, height_map.size());
-		}
+		//else
+		//{
+		//	GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
+		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//	m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
+		//	m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
+		//	m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
+		//	GLCall(glPointSize(1));
+		//	glDrawArrays(GL_POINTS, 0, height_map.size());
+		//}
 	}
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
