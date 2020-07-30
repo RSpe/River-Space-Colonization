@@ -1,6 +1,6 @@
 #include "HeightGeneration.h"
 
-const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point)
+const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour)
 {
 	std::vector<glm::vec2> height_map;
 
@@ -32,13 +32,28 @@ const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_wi
 		next_line_count += 1;
 		if (next_line_count == max_y_point)
 		{
-			std::cout << pixels[i] << std::endl;
-			next_line_count = 0;
+			if (pixels[i] == tree_colour[0] && pixels[i + 1] == tree_colour[1] && pixels[i + 2] == tree_colour[2])
+			{
+				std::cout << 0 << std::endl;
+			}
+			else
+			{
+				std::cout << 1 << std::endl;
+				next_line_count = 0;
+			}
 		}
 		else
 		{
-			std::cout << pixels[i] << " ";
+			if (pixels[i] == ridge_colour[0] && pixels[i + 1] == ridge_colour[1] && pixels[i + 2] == ridge_colour[2])
+			{
+				std::cout << 0 << " ";
+			}
+			else
+			{
+				std::cout << 1 << " ";
+			}
 		}
+
 	}
 
 	return height_map;
