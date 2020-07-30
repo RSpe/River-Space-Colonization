@@ -27,8 +27,11 @@ const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_wi
 		std::swap_ranges(pixels.begin() + 3 * max_x_point * n, pixels.begin() + 3 * max_x_point * (n + 1), pixels.begin() + 3 * max_x_point * (max_y_point - n - 1));
 	}
 
-	for (int i = 0; i < pixel_count; i += 3)
+	for (float i = 0; i < pixel_count; i += 3)
 	{
+		height_map.push_back(glm::vec2(((i + 2) / 50) / 50, ((i + 2) / 50) / 50));
+		height_map.push_back(glm::vec2(((i + 1) / 50) / 50, ((i + 1) / 50) / 50));
+		height_map.push_back(glm::vec2((i/50)/50, (i/50)/50));
 		next_line_count += 1;
 		if (next_line_count == max_y_point)
 		{

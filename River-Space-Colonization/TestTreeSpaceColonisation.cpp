@@ -304,20 +304,25 @@ namespace test
 		{
 			HeightGeneration height_generation;
 			height_map = height_generation.create_base_heights(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour);
+			
+			for (int i = 0; i < 2500; ++i)
+			{
+				std::cout << glm::to_string(height_map[i]) << std::endl;
+			}
 
 			generate_height_map = false;
 		}
 
-		//else
-		//{
-		//	GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
-		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//	m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
-		//	m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
-		//	m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
-		//	GLCall(glPointSize(1));
-		//	glDrawArrays(GL_POINTS, 0, height_map.size());
-		//}
+		else
+		{
+			GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
+			m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
+			m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
+			GLCall(glPointSize(1));
+			glDrawArrays(GL_POINTS, 0, height_map.size());
+		}
 	}
 
 	void TestTreeSpaceColonisation::OnUpdate(float deltaTime)
