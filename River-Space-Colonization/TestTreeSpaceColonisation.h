@@ -45,22 +45,25 @@ namespace test
 		float min_y_point = -50;
 		float max_y_point = 50;
 		int tree_number = 2;
-		int ridge_number = 3;
+		int ridge_number = 1;
 		int ridge_definition = 4;
-		double set_seed = 1000000000;
+		double set_seed = 1000;
 
-		int height_enable_count = 0;
-
-		int check_leaf_change = 0;
-		int check_branch_change = 0;
-		int no_change_count = 0;
+		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
+		std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
+		std::vector<float> ridge_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
 
 	private:
 
 		static const int window_width = 600;
 		static const int window_height = 600;
 
+		int check_leaf_change;
+		int check_branch_change;
+		int no_change_count = 0;
+
 		bool finish;
+		bool generate_height_map;
 
 		std::vector<glm::vec2> height_map;
 		//float height_map[window_width * window_height] = {0};
@@ -69,6 +72,7 @@ namespace test
 		std::vector<glm::vec2> random_roots;
 		std::vector<std::vector<glm::vec2>> random_ridges;
 		std::vector<glm::vec2> random_ridges_1d;
+		std::vector<glm::vec2> leaf_pos;
 		std::vector<glm::vec2> ridges;
 		std::vector<Leaf> leaves;
 		std::vector<std::shared_ptr<Branch>> branches;

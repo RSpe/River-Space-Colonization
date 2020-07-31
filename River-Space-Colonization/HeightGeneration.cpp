@@ -1,86 +1,63 @@
 #include "HeightGeneration.h"
 
-const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point)
+const std::vector<glm::vec2> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour)
 {
-	//unsigned int pbo;
-
-	//glGenBuffers(1, &pbo);
-
 	std::vector<glm::vec2> height_map;
-	//GLenum *hello[1000];
-
-	//int count_255 = 0;
-	//int count_1 = 0;
-	//int count_0 = 0;
-
-	//int pixels[1000];
-
-	//glReadBuffer(GL_FRONT);
-	//glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-	//glReadPixels(0, 0, window_width - 50, window_height - 50, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	//glMapBuffer(GL_PIXEL_PACK_BUFFER, hello);
-
-	//for (int y = 0; y < window_height - 50; ++y)
-	//{
-	//	for (int x = 0; x < window_width - 50; ++x)
-	//	{
-	//		std::cout << pbo << std::endl;
-	//	}
-	//}
-	//for (int y = 0; y < window_height - 50; ++y)
-	//{
-	//	for (int x = 0; x < window_width - 50; ++x)
-	//	{
-	//		unsigned char colour[3];
-
-	//		//glFlush();
-	//		//glReadBuffer(GL_DEPTH);
-	//		glReadPixels(0, 0, window_width - 50, window_height - 50, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-	//		std::cout << (int)colour[0] << (int)colour[1] << (int)colour[2] << std::endl;
-	//		//if (colour[0] == 255.0f && colour[1] == 255.0f && colour[2] == 255.0f)
-	//		//{
-	//		//	height_map.push_back(0);
-	//		//	
-	//		//}
-	//		//else if (colour[0] == 0.001f && colour[1] == 1.0f && colour[2] == 0.5f)
-	//		//{
-	//		//	height_map.push_back(1);
-	//		//}
-	//	}
-	//}
-	//unsigned int fbo;
-	//glGenFramebuffers(1, &fbo);
-	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 	glReadBuffer(GL_FRONT);
 
-	GLfloat pixels[50][50][3];
+	//GLfloat pixels[50][50][3];
 
 	int read_point_x = (window_width / 2) - (max_x_point / 2);
 	int read_point_y = (window_height / 2) - (max_y_point / 2);
 
-	glReadPixels(read_point_x, read_point_y, max_x_point, max_y_point, GL_RGB, GL_FLOAT, &pixels);
+	int pixel_count = 3 * max_x_point * max_y_point;
 
-	//std::cout << sizeof(pixels) / sizeof(float) << std::endl;
-	//int count_y = 0;
-	//int count_x = 1;
+	//glReadPixels(read_point_x, read_point_y, max_x_point, max_y_point, GL_RGB, GL_FLOAT, &pixels);
+	std::vector<GLfloat> pixels(pixel_count);
 
-	for (int i = max_y_point - 1; i > 0 ; --i)
+	glReadPixels(read_point_x, read_point_y, max_x_point, max_y_point, GL_RGB, GL_FLOAT, pixels.data());
+
+	//std::cout << sizeof(pixels) << std::endl;
+	int next_line_count = 0;
+	//std::reverse(pixels.begin(), pixels.end());
+
+	for (int n = 0; n != max_y_point / 2; ++n) 
 	{
-		for (int j = 0; j < max_x_point; ++j)
+		std::swap_ranges(pixels.begin() + 3 * max_x_point * n, pixels.begin() + 3 * max_x_point * (n + 1), pixels.begin() + 3 * max_x_point * (max_y_point - n - 1));
+	}
+
+	for (float i = 0; i < pixel_count; i += 3)
+	{
+		height_map.push_back(glm::vec2(((i + 2) / 50) / 50, ((i + 2) / 50) / 50));
+		height_map.push_back(glm::vec2(((i + 1) / 50) / 50, ((i + 1) / 50) / 50));
+		height_map.push_back(glm::vec2((i/50)/50, (i/50)/50));
+		next_line_count += 1;
+		if (next_line_count == max_y_point)
 		{
-			if (j < max_x_point - 1)
+			if (pixels[i] == tree_colour[0] && pixels[i + 1] == tree_colour[1] && pixels[i + 2] == tree_colour[2])
 			{
-				std::cout << pixels[i][j - 1][0] << " ";
+				std::cout << 0 << std::endl;
 			}
 			else
 			{
-				std::cout << pixels[i][j][0] << std::endl;
+				std::cout << 1 << std::endl;
+				next_line_count = 0;
 			}
-			
 		}
-	}
+		else
+		{
+			if (pixels[i] == ridge_colour[0] && pixels[i + 1] == ridge_colour[1] && pixels[i + 2] == ridge_colour[2])
+			{
+				std::cout << 0 << " ";
+			}
+			else
+			{
+				std::cout << 1 << " ";
+			}
+		}
 
+	}
 
 	return height_map;
 }
