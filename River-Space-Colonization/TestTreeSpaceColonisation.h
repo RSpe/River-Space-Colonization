@@ -40,35 +40,39 @@ namespace test
 		float max_distance = 100;
 		float min_distance = 0.01;
 		float branch_length = 0.02;
-		float min_x_point = -50;
-		float max_x_point = 50;
-		float min_y_point = -50;
-		float max_y_point = 50;
+		float min_x_point = -100;
+		float max_x_point = 100;
+		float min_y_point = -100;
+		float max_y_point = 100;
 		int tree_number = 2;
-		int ridge_number = 3;
+		int ridge_number = 2;
 		int ridge_definition = 4;
-		double set_seed = 1000000000;
+		double set_seed = 1000;
 
-		int height_enable_count = 0;
-
-		int check_leaf_change = 0;
-		int check_branch_change = 0;
-		int no_change_count = 0;
+		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
+		std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
+		std::vector<float> ridge_colour = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	private:
 
 		static const int window_width = 600;
 		static const int window_height = 600;
 
-		bool finish;
+		int check_leaf_change;
+		int check_branch_change;
+		int no_change_count = 0;
 
-		std::vector<glm::vec2> height_map;
+		bool finish;
+		int generate_height_map = 0;
+
+		std::vector<float> height_map;
 		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;
 		std::vector<glm::vec2> random_roots;
 		std::vector<std::vector<glm::vec2>> random_ridges;
 		std::vector<glm::vec2> random_ridges_1d;
+		std::vector<glm::vec2> leaf_pos;
 		std::vector<glm::vec2> ridges;
 		std::vector<Leaf> leaves;
 		std::vector<std::shared_ptr<Branch>> branches;
