@@ -40,18 +40,18 @@ namespace test
 		float max_distance = 100;
 		float min_distance = 0.01;
 		float branch_length = 0.02;
-		float min_x_point = -50;
-		float max_x_point = 50;
-		float min_y_point = -50;
-		float max_y_point = 50;
+		float min_x_point = -100;
+		float max_x_point = 100;
+		float min_y_point = -100;
+		float max_y_point = 100;
 		int tree_number = 2;
-		int ridge_number = 1;
+		int ridge_number = 2;
 		int ridge_definition = 4;
 		double set_seed = 1000;
 
 		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
 		std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
-		std::vector<float> ridge_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
+		std::vector<float> ridge_colour = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	private:
 
@@ -63,9 +63,9 @@ namespace test
 		int no_change_count = 0;
 
 		bool finish;
-		bool generate_height_map;
+		int generate_height_map = 0;
 
-		std::vector<glm::vec2> height_map;
+		std::vector<float> height_map;
 		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;
