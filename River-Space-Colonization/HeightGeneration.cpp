@@ -1,12 +1,10 @@
 #include "HeightGeneration.h"
 
-const std::vector<float> HeightGeneration::create_base_heights(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour)
+void HeightGeneration::generate_maps(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour)
 {
 
 	int read_point_x = (window_width / 2) - (max_x_point / 2);
 	int read_point_y = (window_height / 2) - (max_y_point / 2);
-
-	std::vector<glm::vec2> location_map;
 
 	for (float i = read_point_y; i < read_point_y + max_y_point; ++i)
 	{
@@ -19,8 +17,6 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 	}
 
 	glReadBuffer(GL_FRONT);
-
-	std::vector<float> height_map;
 
 	int rgb_count = 3 * max_x_point * max_y_point;
 
@@ -42,11 +38,11 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 		{
 			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
 			{
-				std::cout << 1 << std::endl;
+				std::cout << 5 << std::endl;
 			}
 			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
 			{
-				std::cout << 2 << std::endl;
+				std::cout << 255 << std::endl;
 			}
 			else
 			{
@@ -58,11 +54,11 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 		{
 			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
 			{
-				std::cout << 1 << " ";
+				std::cout << 5 << " ";
 			}
 			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
 			{
-				std::cout << 2 << " ";
+				std::cout << 255 << " ";
 			}
 			else
 			{
@@ -71,6 +67,14 @@ const std::vector<float> HeightGeneration::create_base_heights(int window_width,
 			next_line_count += 1;
 		}
 	}
+}
 
+std::vector<float> HeightGeneration::get_height_map()
+{
 	return height_map;
+}
+
+std::vector<glm::vec2> HeightGeneration::get_location_map()
+{
+	return location_map;
 }

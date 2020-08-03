@@ -66,6 +66,7 @@ namespace test
 		int generate_height_map = 0;
 
 		std::vector<float> height_map;
+		std::vector<glm::vec2> location_map;
 		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;
