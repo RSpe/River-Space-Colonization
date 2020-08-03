@@ -10,6 +10,8 @@ public:
 	std::vector<float> get_height_map();
 	std::vector<glm::vec2> get_location_map();
 private:
+	void terrian_interpolation();
+
 	std::vector<float> height_map;
 	std::vector<glm::vec2> location_map;
 };

@@ -43,7 +43,7 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 			}
 			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
 			{
-				height_map.push_back(1.0f);
+				height_map.push_back(-1.0f);
 				//std::cout << 2 << std::endl;
 			}
 			else
@@ -70,6 +70,12 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 		//	next_line_count += 1;
 		//}
 	}
+	terrian_interpolation();
+}
+
+void HeightGeneration::terrian_interpolation()
+{
+
 }
 
 std::vector<float> HeightGeneration::get_height_map()
