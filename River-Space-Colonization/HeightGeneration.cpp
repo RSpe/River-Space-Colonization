@@ -34,38 +34,41 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 
 	for (int m = 0; m < colours.size(); m += 3)
 	{
-		if (next_line_count == max_x_point - 1)
-		{
+		//if (next_line_count == max_x_point - 1)
+		//{
 			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
 			{
-				std::cout << 5 << std::endl;
+				height_map.push_back(255.0f);
+				//std::cout << 1 << std::endl;
 			}
 			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
 			{
-				std::cout << 255 << std::endl;
+				height_map.push_back(1.0f);
+				//std::cout << 2 << std::endl;
 			}
 			else
 			{
-				std::cout << 0 << std::endl;
+				height_map.push_back(0.0f);
+				//std::cout << 0 << std::endl;
 			}
-			next_line_count = 0;
-		}
-		else
-		{
-			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
-			{
-				std::cout << 5 << " ";
-			}
-			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
-			{
-				std::cout << 255 << " ";
-			}
-			else
-			{
-				std::cout << 0 << " ";
-			}
-			next_line_count += 1;
-		}
+			//next_line_count = 0;
+		//}
+		//else
+		//{
+		//	if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
+		//	{
+		//		std::cout << 5 << " ";
+		//	}
+		//	else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
+		//	{
+		//		std::cout << 255 << " ";
+		//	}
+		//	else
+		//	{
+		//		std::cout << 0 << " ";
+		//	}
+		//	next_line_count += 1;
+		//}
 	}
 }
 
