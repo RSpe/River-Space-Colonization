@@ -1,6 +1,6 @@
 #include "HeightGeneration.h"
 
-void HeightGeneration::generate_maps(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour)
+void HeightGeneration::generate_maps(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour, std::vector<std::shared_ptr<Branch>> branches)
 {
 
 	int read_point_x = (window_width / 2) - (max_x_point / 2);
@@ -29,46 +29,47 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 		std::swap_ranges(colours.begin() + 3 * max_x_point * n, colours.begin() + 3 * max_x_point * (n + 1), colours.begin() + 3 * max_x_point * (max_y_point - n - 1));
 	}
 
-	//std::cout << pixels.size() << std::endl;
+	std::cout << glm::to_string(branches[0]->get_parent()) << " " << glm::to_string(branches[0]->get_position()) << " " << glm::to_string(branches[0]->get_direction()) << std::endl;
+
 	int next_line_count = 0;
 
 	for (int m = 0; m < colours.size(); m += 3)
 	{
-		//if (next_line_count == max_x_point - 1)
-		//{
+		if (next_line_count == max_x_point - 1)
+		{
 			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
 			{
-				height_map.push_back(255.0f);
-				//std::cout << 1 << std::endl;
+				//height_map.push_back(255.0f);
+				std::cout << 1 << std::endl;
 			}
 			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
 			{
-				height_map.push_back(-1.0f);
-				//std::cout << 2 << std::endl;
+				//height_map.push_back(-1.0f);
+				std::cout << 2 << std::endl;
 			}
 			else
 			{
-				height_map.push_back(0.0f);
-				//std::cout << 0 << std::endl;
+				//height_map.push_back(0.0f);
+				std::cout << 0 << std::endl;
 			}
-			//next_line_count = 0;
-		//}
-		//else
-		//{
-		//	if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
-		//	{
-		//		std::cout << 5 << " ";
-		//	}
-		//	else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
-		//	{
-		//		std::cout << 255 << " ";
-		//	}
-		//	else
-		//	{
-		//		std::cout << 0 << " ";
-		//	}
-		//	next_line_count += 1;
-		//}
+			next_line_count = 0;
+		}
+		else
+		{
+			if (colours[m] == tree_colour[0] && colours[m + 1] == tree_colour[1] && colours[m + 2] == tree_colour[2])
+			{
+				std::cout << 5 << " ";
+			}
+			else if (colours[m] == ridge_colour[0] && colours[m + 1] == ridge_colour[1] && colours[m + 2] == ridge_colour[2])
+			{
+				std::cout << 255 << " ";
+			}
+			else
+			{
+				std::cout << 0 << " ";
+			}
+			next_line_count += 1;
+		}
 	}
 	terrian_interpolation();
 }

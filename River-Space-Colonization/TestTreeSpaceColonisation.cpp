@@ -303,7 +303,7 @@ namespace test
 		else if (generate_height_map == 1)
 		{
 			HeightGeneration height_generation;
-			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour);
+			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, branches);
 			height_map = height_generation.get_height_map();
 			location_map = height_generation.get_location_map();
 			std::cout << height_map.size() << " " << location_map.size() << std::endl;
