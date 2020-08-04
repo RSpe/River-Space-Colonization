@@ -213,7 +213,7 @@ namespace test
 		VertexBufferLayout layout1;
 
 		layout1.Push<float>(2);
-		if (finish == false || generate_height_map > 1)
+		if (finish == false) //|| generate_height_map > 1)
 		{
 			int leaf_storage_length = leaves.size(); // Used to check if there is no more leaves to show.
 			std::vector<glm::vec2> leaf_pos;
@@ -303,20 +303,30 @@ namespace test
 		else if (generate_height_map == 1)
 		{
 			HeightGeneration height_generation;
-			height_map = height_generation.create_base_heights(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour);
-
+			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, branches);
+			height_map = height_generation.get_height_map();
+			location_map = height_generation.get_location_map();
+			std::cout << height_map.size() << " " << location_map.size() << std::endl;
 			generate_height_map += 1;
 		}
 
 		//else
 		//{
+		//	//std::cout << "loop" << std::endl;
+		//	m_Shader = std::make_unique<Shader>("HeightMap.shader");
+
+		//	m_Shader->Bind();
+
 		//	GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
 		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//	m_VertexBuffer4 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(glm::vec2));
+		//	m_VertexBuffer4 = std::make_unique<VertexBuffer>(location_map.data(), location_map.size() * sizeof(glm::vec2));
+		//	m_VertexBuffer5 = std::make_unique<VertexBuffer>(height_map.data(), height_map.size() * sizeof(float));
+
 		//	m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
-		//	m_Shader->SetUniform4f("u_Color", 0.99609375f, 0.41015625f, 0.703125f, 1.0f);
+		//	m_VAO->AddBuffer(*m_VertexBuffer5, layout1);
+		//	
 		//	GLCall(glPointSize(1));
-		//	glDrawArrays(GL_POINTS, 0, height_map.size());
+		//	glDrawArrays(GL_POINTS, 0, location_map.size());
 		//}
 	}
 

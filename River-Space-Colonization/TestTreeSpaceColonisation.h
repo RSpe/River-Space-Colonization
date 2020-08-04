@@ -66,6 +66,7 @@ namespace test
 		int generate_height_map = 0;
 
 		std::vector<float> height_map;
+		std::vector<glm::vec2> location_map;
 		//float height_map[window_width * window_height] = {0};
 
 		std::vector<glm::vec2> random_leaves;
@@ -84,6 +85,7 @@ namespace test
 		std::unique_ptr<VertexBuffer> m_VertexBuffer2;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer3;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer4;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer5;
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 
