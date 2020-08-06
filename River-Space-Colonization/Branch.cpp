@@ -1,12 +1,13 @@
 #include "Branch.h"
 
-Branch::Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir)
+Branch::Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir, float height)
 {
 	parent_position = par;
 	position = pos;
 	direction = dir;
 	counter = 0;
 	original_direction = dir;
+	current_height = height;
 	parent_index;
 }
 
@@ -53,6 +54,11 @@ float Branch::get_count() const
 void Branch::increment_count(int count)
 {
 	this->counter += count;
+}
+
+float Branch::get_height() const
+{
+	return this->current_height;
 }
 
 void Branch::reset() 

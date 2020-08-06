@@ -5,7 +5,7 @@
 class Branch
 {
 	public:
-		Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir);
+		Branch(glm::vec2 par, glm::vec2 pos, glm::vec2 dir, float height);
 
 		glm::vec2 get_position() const;
 		glm::vec2 get_parent() const;
@@ -16,12 +16,14 @@ class Branch
 		void set_direction(glm::vec2 new_direction);
 		float get_count() const;
 		void increment_count(int count);
+		float get_height() const;
 		void reset();
 
 	private:
 		glm::vec2 parent_position;
 		glm::vec2 position;
 		glm::vec2 direction;
+		float current_height;
 
 		float counter;
 		glm::vec2 original_direction;

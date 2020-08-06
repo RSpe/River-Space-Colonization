@@ -47,7 +47,7 @@ namespace test
 		int tree_number = 2;
 		int ridge_number = 2;
 		int ridge_definition = 4;
-		double set_seed = 1000;
+		double set_seed = 100000000;
 
 		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
 		std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
@@ -65,7 +65,7 @@ namespace test
 		bool finish;
 		int generate_height_map = 0;
 
-		std::vector<float> height_map;
+		std::vector<int> height_map;
 		std::vector<glm::vec2> location_map;
 		//float height_map[window_width * window_height] = {0};
 
@@ -79,6 +79,7 @@ namespace test
 		std::vector<std::shared_ptr<Branch>> branches;
 		
 		std::vector<glm::vec2> branch_pos;
+		std::vector<float> branch_height;
 
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;

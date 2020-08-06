@@ -210,7 +210,7 @@
     <ClInclude Include="VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HeightMap.shader" />
+    <None Include="General.shader" />
     <None Include="River.shader" />
     <None Include="Texture.shader" />
   </ItemGroup>

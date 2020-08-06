@@ -1,4 +1,5 @@
 #include "TestTreeSpaceColonisation.h"
+#include <iomanip>
 
 // TODO: Add root generation class
 
@@ -33,10 +34,15 @@ namespace test
 			}
 		}
 
-		for (int z = 0; z < random_ridges_1d.size(); ++z)
+		for (int z = 0; z < random_roots.size(); ++z)
 		{
-			std::cout << glm::to_string(random_ridges_1d[z]) << std::endl;
+			std::cout << glm::to_string(random_roots[z]) << std::endl;
 		}
+
+		//for (int z = 0; z < random_ridges_1d.size(); ++z)
+		//{
+		//	std::cout << glm::to_string(random_ridges_1d[z]) << std::endl;
+		//}
 
 		for (int i = 0; i < tree_number; i++)
 		{
@@ -47,10 +53,10 @@ namespace test
 
 			//std::cout << glm::to_string(random_roots[i]) << std::endl;
 
-			std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f))); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
+			std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
 			//std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, 1.0f)));
 
-			branches.push_back(root); // Add root as the first branch object.`
+			branches.push_back(root); // Add root as the first branch object.
 
 			GLCall(glEnable(GL_BLEND));
 			GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -81,7 +87,8 @@ namespace test
 					glm::vec2 parent_direction = current->get_direction();
 					glm::vec2 parent_position = branches.back()->get_position();
 					glm::vec2 new_position = parent_position + (parent_direction * branch_length);
-					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction));
+					float new_distance = (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction, new_distance));
 					int parent_index = branches.size() - 1;
 					next_branch->set_parent_index(parent_index);
 					branches.push_back(next_branch);
@@ -194,8 +201,9 @@ namespace test
 						glm::vec2 parent_position = branches[k]->get_position();
 						glm::vec2 new_direction = glm::normalize(parent_direction / (float(branches[k]->get_count() + 1)));
 						glm::vec2 new_position = parent_position + (new_direction * branch_length);
+						float new_distance = (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
 
-						std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction));
+						std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction, new_distance));
 
 						next_branch->set_parent_index(k);
 						new_branches.push_back(next_branch);
@@ -258,8 +266,10 @@ namespace test
 				{
 					glm::vec2 pixel_pos_branch = (branches[j]->get_position());
 					glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
+					float pixel_height = (branches[j]->get_height());
 					branch_pos.push_back(pixel_pos_branch);
 					branch_pos.push_back(pixel_pos_parent);
+					branch_height.push_back(pixel_height);
 				}
 			}
 
@@ -274,7 +284,7 @@ namespace test
 
 			m_VAO->AddBuffer(*m_VertexBuffer1, layout1);
 
-			m_Shader = std::make_unique<Shader>("River.shader");
+			m_Shader = std::make_unique<Shader>("General.shader");
 			m_Shader->Bind();
 			/* Have to call uniforms after a shader is bound */
 			m_Shader->SetUniform4f("u_Color", leaf_colour[0], leaf_colour[1], leaf_colour[2], leaf_colour[3]);
@@ -295,19 +305,28 @@ namespace test
 			}
 
 			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			m_Shader->SetUniform4f("u_Color", tree_colour[0], tree_colour[1], tree_colour[2], tree_colour[3]);
+
+			m_Shader->Unbind();
+			m_Shader = std::make_unique<Shader>("River.shader");
+			m_Shader->Bind();
+			//m_Shader->SetUniform4f("u_Color", tree_colour[0], tree_colour[1], tree_colour[2], tree_colour[3]);
 
 			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 		}
 
 		else if (generate_height_map == 1)
 		{
+			//std::cout << branches.size() << std::endl;
 			HeightGeneration height_generation;
-			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, branches);
+			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, tree_number);
 			height_map = height_generation.get_height_map();
 			location_map = height_generation.get_location_map();
-			std::cout << height_map.size() << " " << location_map.size() << std::endl;
+			//std::cout << height_map.size() << " " << location_map.size() << std::endl;
 			generate_height_map += 1;
+			//for (int i = 0; i < branch_height.size(); ++i)
+			//{
+			//	std::cout << std::fixed << std::setprecision(5) << branch_height[i] << std::endl;
+			//}
 		}
 
 		//else
