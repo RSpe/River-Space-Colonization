@@ -17,6 +17,7 @@ class Branch
 		float get_count() const;
 		void increment_count(int count);
 		float get_height() const;
+		void set_height(float new_height);
 		void reset();
 
 	private:

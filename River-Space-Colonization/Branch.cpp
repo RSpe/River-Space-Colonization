@@ -61,6 +61,11 @@ float Branch::get_height() const
 	return this->current_height;
 }
 
+void Branch::set_height(float new_height)
+{
+	this->current_height = new_height;
+}
+
 void Branch::reset() 
 {
 	set_direction(original_direction);

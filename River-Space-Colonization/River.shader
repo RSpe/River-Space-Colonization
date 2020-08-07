@@ -1,23 +1,25 @@
 #shader vertex
 #version 460 core
 
-layout(location = 0) in vec4 position;
-//layout(location = 1) in vec4 rgba;
+layout (location = 0) in vec4 position;
+layout (location = 2) in vec4 rgba;
+
+out vec4 v_colour;
 
 void main()
 {
 	gl_Position = position;
+	v_colour = rgba;
 };
 
 #shader fragment
 #version 460 core
 
-layout(location = 0) out vec4 color;
+out vec4 f_colour;
 
-/* u_ means this is a set uniform variable */
-//uniform vec4 u_Color;
+in vec4 v_colour;
 
 void main()
 {
-	color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	f_colour = v_colour;
 };

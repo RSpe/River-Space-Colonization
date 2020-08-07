@@ -50,8 +50,8 @@ namespace test
 		double set_seed = 100000000;
 
 		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
-		std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
-		std::vector<float> ridge_colour = { 1.0f, 0.0f, 0.0f, 1.0f };
+		//std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
+		std::vector<float> ridge_colour = { 1.0f, 0.0f, 1.0f, 1.0f };
 
 	private:
 
@@ -79,7 +79,7 @@ namespace test
 		std::vector<std::shared_ptr<Branch>> branches;
 		
 		std::vector<glm::vec2> branch_pos;
-		std::vector<float> branch_height;
+		std::vector<glm::vec4> branch_height;
 
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;

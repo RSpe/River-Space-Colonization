@@ -87,7 +87,7 @@ namespace test
 					glm::vec2 parent_direction = current->get_direction();
 					glm::vec2 parent_position = branches.back()->get_position();
 					glm::vec2 new_position = parent_position + (parent_direction * branch_length);
-					float new_distance = (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+					float new_distance = current->get_height() + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
 					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction, new_distance));
 					int parent_index = branches.size() - 1;
 					next_branch->set_parent_index(parent_index);
@@ -180,6 +180,7 @@ namespace test
 						glm::vec2 normalised = glm::normalize(new_direction);
 						branches[closest_branch]->set_direction(normalised);
 						branches[closest_branch]->increment_count(1);
+						//branches[closest_branch]->set_height(1);
 					}
 				}
 
@@ -201,7 +202,7 @@ namespace test
 						glm::vec2 parent_position = branches[k]->get_position();
 						glm::vec2 new_direction = glm::normalize(parent_direction / (float(branches[k]->get_count() + 1)));
 						glm::vec2 new_position = parent_position + (new_direction * branch_length);
-						float new_distance = (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+						float new_distance = branches[k]->get_height() + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
 
 						std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction, new_distance));
 
@@ -266,10 +267,12 @@ namespace test
 				{
 					glm::vec2 pixel_pos_branch = (branches[j]->get_position());
 					glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
-					float pixel_height = (branches[j]->get_height());
+					glm::vec4 current_rgb_height = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+					glm::vec4 parent_rgb_height = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
 					branch_pos.push_back(pixel_pos_branch);
 					branch_pos.push_back(pixel_pos_parent);
-					branch_height.push_back(pixel_height);
+					branch_height.push_back(current_rgb_height);
+					branch_height.push_back(parent_rgb_height);
 				}
 			}
 
@@ -277,8 +280,6 @@ namespace test
 
 			m_VertexBuffer1 = std::make_unique<VertexBuffer>(leaf_pos.data(), leaf_pos.size() * sizeof(glm::vec2));
 			m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_pos.data(), branch_pos.size() * sizeof(glm::vec2));
-
-			//VertexBufferLayout layout1;
 
 			//layout1.Push<float>(2);
 
@@ -304,8 +305,18 @@ namespace test
 				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
 			}
 
-			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
+			//VertexBufferLayout layout2;
 
+			m_VertexBuffer4 = std::make_unique<VertexBuffer>(branch_height.data(), branch_height.size() * sizeof(float));
+			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
+			m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
+
+			//std::cout << branch_pos.size() << " " << branch_height.size() << std::endl;
+			//for (int i = 0; i < branch_height.size(); ++i)
+			//{
+			//	std::cout << glm::to_string(branch_pos[i]) << " " << glm::to_string(branch_height[i]) << std::endl;
+			//}
+			
 			m_Shader->Unbind();
 			m_Shader = std::make_unique<Shader>("River.shader");
 			m_Shader->Bind();
@@ -314,20 +325,20 @@ namespace test
 			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
 		}
 
-		else if (generate_height_map == 1)
-		{
-			//std::cout << branches.size() << std::endl;
-			HeightGeneration height_generation;
-			height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, tree_number);
-			height_map = height_generation.get_height_map();
-			location_map = height_generation.get_location_map();
-			//std::cout << height_map.size() << " " << location_map.size() << std::endl;
-			generate_height_map += 1;
-			//for (int i = 0; i < branch_height.size(); ++i)
-			//{
-			//	std::cout << std::fixed << std::setprecision(5) << branch_height[i] << std::endl;
-			//}
-		}
+		//else if (generate_height_map == 1)
+		//{
+		//	//std::cout << branches.size() << std::endl;
+		//	HeightGeneration height_generation;
+		//	height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, tree_number);
+		//	height_map = height_generation.get_height_map();
+		//	location_map = height_generation.get_location_map();
+		//	//std::cout << height_map.size() << " " << location_map.size() << std::endl;
+		//	generate_height_map += 1;
+		//	//for (int i = 0; i < branch_height.size(); ++i)
+		//	//{
+		//	//	std::cout << glm::to_string(branch_pos[i]) << " " << glm::to_string(branch_pos[i + 1]) << " " << branch_height[i] << std::endl;
+		//	//}
+		//}
 
 		//else
 		//{
