@@ -16,7 +16,6 @@ namespace test
 		float clip_space_width_boundary = window_width / window_width;
 		float clip_space_height_boundary = window_height / window_height;
 
-
 		float clip_space_min_x = min_x_point / window_width;
 		float clip_space_max_x = max_x_point / window_width;
 		float clip_space_min_y = min_y_point / window_height;
@@ -53,7 +52,7 @@ namespace test
 
 			//std::cout << glm::to_string(random_roots[i]) << std::endl;
 
-			std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
+			std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0, 0)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
 			//std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, 1.0f)));
 
 			branches.push_back(root); // Add root as the first branch object.
@@ -87,8 +86,9 @@ namespace test
 					glm::vec2 parent_direction = current->get_direction();
 					glm::vec2 parent_position = branches.back()->get_position();
 					glm::vec2 new_position = parent_position + (parent_direction * branch_length);
-					float new_distance = current->get_height() + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
-					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction, new_distance));
+					float parent_height = current->get_height();
+					float new_height = parent_height + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction, new_height, parent_height));
 					int parent_index = branches.size() - 1;
 					next_branch->set_parent_index(parent_index);
 					branches.push_back(next_branch);
@@ -202,9 +202,10 @@ namespace test
 						glm::vec2 parent_position = branches[k]->get_position();
 						glm::vec2 new_direction = glm::normalize(parent_direction / (float(branches[k]->get_count() + 1)));
 						glm::vec2 new_position = parent_position + (new_direction * branch_length);
-						float new_distance = branches[k]->get_height() + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+						float parent_height = branches[k]->get_height();
+						float new_height = parent_height + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
 
-						std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction, new_distance));
+						std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction, new_height, parent_height));
 
 						next_branch->set_parent_index(k);
 						new_branches.push_back(next_branch);
@@ -220,15 +221,19 @@ namespace test
 	void TestTreeSpaceColonisation::Draw()
 	{
 		VertexBufferLayout layout1;
+		VertexBufferLayout layout2;
 
 		layout1.Push<float>(2);
-		if (finish == false) //|| generate_height_map > 1)
+		layout2.Push<float>(4);
+		layout2.Push<float>(4);
+
+		if (finish == false || finish == true)
 		{
 			int leaf_storage_length = leaves.size(); // Used to check if there is no more leaves to show.
 			std::vector<glm::vec2> leaf_pos;
 
 			int branch_storage_length = branches.size();
-			int branch_position_length = branch_pos.size() / 2; // There is double the amount of branch positions stored as we need to store the parent and current point so a line can be drawn between the two.
+			int branch_position_length = branch_combined.size() / 4; // There is double the amount of branch positions stored as we need to store the parent and current point so a line can be drawn between the two.
 
 			if (check_leaf_change != leaf_storage_length)
 			{
@@ -255,7 +260,6 @@ namespace test
 			{
 				for (int i = 0; i < leaf_storage_length; ++i)
 				{
-					//std::cout << leaves.size() << std::endl;
 					glm::vec2 pixel_pos_leaf = (leaves[i].get_position());
 					leaf_pos.push_back(pixel_pos_leaf);
 				}
@@ -267,21 +271,18 @@ namespace test
 				{
 					glm::vec2 pixel_pos_branch = (branches[j]->get_position());
 					glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
-					glm::vec4 current_rgb_height = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
-					glm::vec4 parent_rgb_height = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
-					branch_pos.push_back(pixel_pos_branch);
-					branch_pos.push_back(pixel_pos_parent);
-					branch_height.push_back(current_rgb_height);
-					branch_height.push_back(parent_rgb_height);
+					glm::vec4 current_rgb_height = glm::vec4(0.0f, 0.0f, 1.0f, branches[j]->get_height());
+					glm::vec4 parent_rgb_height = glm::vec4(0.0f, 0.0f, 1.0f, branches[j]->get_parent_height());
+					branch_combined.push_back(glm::vec4(pixel_pos_branch[0], pixel_pos_branch[1], 0.0f, 1.0f));
+					branch_combined.push_back(current_rgb_height);
+					branch_combined.push_back(glm::vec4(pixel_pos_parent[0], pixel_pos_parent[1], 0.0f, 1.0f));
+					branch_combined.push_back(parent_rgb_height);
 				}
 			}
 
 			m_VAO = std::make_unique<VertexArray>();
 
 			m_VertexBuffer1 = std::make_unique<VertexBuffer>(leaf_pos.data(), leaf_pos.size() * sizeof(glm::vec2));
-			m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_pos.data(), branch_pos.size() * sizeof(glm::vec2));
-
-			//layout1.Push<float>(2);
 
 			m_VAO->AddBuffer(*m_VertexBuffer1, layout1);
 
@@ -305,39 +306,25 @@ namespace test
 				GLCall(glDrawArrays(GL_LINE_STRIP, 0, random_ridges[m].size()));
 			}
 
-			//VertexBufferLayout layout2;
-
-			m_VertexBuffer4 = std::make_unique<VertexBuffer>(branch_height.data(), branch_height.size() * sizeof(float));
-			m_VAO->AddBuffer(*m_VertexBuffer2, layout1);
-			m_VAO->AddBuffer(*m_VertexBuffer4, layout1);
-
-			//std::cout << branch_pos.size() << " " << branch_height.size() << std::endl;
-			//for (int i = 0; i < branch_height.size(); ++i)
-			//{
-			//	std::cout << glm::to_string(branch_pos[i]) << " " << glm::to_string(branch_height[i]) << std::endl;
-			//}
-			
 			m_Shader->Unbind();
 			m_Shader = std::make_unique<Shader>("River.shader");
 			m_Shader->Bind();
-			//m_Shader->SetUniform4f("u_Color", tree_colour[0], tree_colour[1], tree_colour[2], tree_colour[3]);
 
-			GLCall(glDrawArrays(GL_LINES, 0, branch_pos.size()));
+			m_VertexBuffer2 = std::make_unique<VertexBuffer>(branch_combined.data(), branch_combined.size() * sizeof(glm::vec4));
+
+			m_VAO->AddBuffer(*m_VertexBuffer2, layout2);
+
+			glDrawArrays(GL_LINES, 0, branch_combined.size());
 		}
 
 		//else if (generate_height_map == 1)
 		//{
-		//	//std::cout << branches.size() << std::endl;
 		//	HeightGeneration height_generation;
-		//	height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, tree_number);
+		//	height_generation.generate_maps(window_width, window_height, min_x_point, max_x_point, min_y_point, max_y_point, tree_colour, ridge_colour, branches);
 		//	height_map = height_generation.get_height_map();
 		//	location_map = height_generation.get_location_map();
-		//	//std::cout << height_map.size() << " " << location_map.size() << std::endl;
+		//	std::cout << height_map.size() << " " << location_map.size() << std::endl;
 		//	generate_height_map += 1;
-		//	//for (int i = 0; i < branch_height.size(); ++i)
-		//	//{
-		//	//	std::cout << glm::to_string(branch_pos[i]) << " " << glm::to_string(branch_pos[i + 1]) << " " << branch_height[i] << std::endl;
-		//	//}
 		//}
 
 		//else

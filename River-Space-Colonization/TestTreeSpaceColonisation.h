@@ -35,19 +35,19 @@ namespace test
 		void OnRender() override;
 		void OnImGuiRender() override;
 
-		int leaves_to_generate = 25;
+		int leaves_to_generate = 40;
 
 		float max_distance = 100;
 		float min_distance = 0.01;
 		float branch_length = 0.02;
-		float min_x_point = -100;
-		float max_x_point = 100;
-		float min_y_point = -100;
-		float max_y_point = 100;
+		float min_x_point = -300;
+		float max_x_point = 300;
+		float min_y_point = -300;
+		float max_y_point = 300;
 		int tree_number = 2;
-		int ridge_number = 2;
+		int ridge_number = 3;
 		int ridge_definition = 4;
-		double set_seed = 100000000;
+		double set_seed = 480465;
 
 		std::vector<float> leaf_colour = { 0.1f, 0.2f, 0.3f, 1.0f };
 		//std::vector<float> tree_colour = { 0.0f, 1.0f, 1.0f, 1.0f };
@@ -78,10 +78,10 @@ namespace test
 		std::vector<Leaf> leaves;
 		std::vector<std::shared_ptr<Branch>> branches;
 		
-		std::vector<glm::vec2> branch_pos;
-		std::vector<glm::vec4> branch_height;
+		std::vector<glm::vec4> branch_combined;
 
 		std::unique_ptr<VertexArray> m_VAO;
+		std::unique_ptr<VertexArray> m_VAO2;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer1;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer2;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer3;
