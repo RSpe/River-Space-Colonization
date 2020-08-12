@@ -2,6 +2,7 @@
 #include "VertexBufferLayout.h"
 
 #include"Renderer.h"
+#include <iostream>
 
 VertexArray::VertexArray()
 {
@@ -22,6 +23,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
+		//std::cout << i << " " << element.count << " " << element.type << " " << layout.GetStride() << " " << offset <<  std::endl;
 		GLCall(glEnableVertexAttribArray(i));
 		GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalised, layout.GetStride(), (const void*)offset)); // Index 0 of vao, bound to currently bound array buffer, set index to 1 and can bind to a different buffer
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);

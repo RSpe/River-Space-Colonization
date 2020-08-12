@@ -45,9 +45,6 @@
     <ClCompile Include="VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBufferLayout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -196,7 +193,7 @@
     <None Include="River.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="HeightMap.shader">
+    <None Include="General.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
