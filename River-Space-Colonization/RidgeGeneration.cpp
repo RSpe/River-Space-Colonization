@@ -91,14 +91,6 @@ const std::vector<std::vector<glm::vec2>> RidgeGeneration::generate_ridges(int n
 	return random_ridges;
 }
 
-//double RidgeGeneration::distance(glm::vec2 point1, glm::vec2 point2)
-//{
-//	float under_sqrt = pow(point2[0] - point1[0], 2) + pow(point2[1] - point1[1], 2);
-//	float dist = pow(under_sqrt, 0.5);
-//
-//	return dist;
-//}
-
 double RidgeGeneration::distance(glm::vec2 point1, glm::vec2 point2)
 {
 	float under_sqrt = pow(point2[0] - point1[0], 2) + pow(point2[1] - point1[1], 2);
