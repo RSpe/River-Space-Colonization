@@ -16,18 +16,6 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{0b453030-53a5-48b7-af7f-d83a0f32d386}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\vendor">
-      <UniqueIdentifier>{6dce541a-0972-4379-a91e-e88a79aa4fd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\vendor\stb_image">
-      <UniqueIdentifier>{beda9633-aea7-4370-abeb-c5edfe799813}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\vendor\imgui">
-      <UniqueIdentifier>{81eb16c9-5714-4576-b2ae-e6280b26d651}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\tests">
-      <UniqueIdentifier>{88c11681-b787-410d-b203-cf5fff451577}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SpaceColonisation">
       <UniqueIdentifier>{7e23a94d-fb00-40ac-bcef-34eff97459f1}</UniqueIdentifier>
     </Filter>
@@ -51,33 +39,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stb_image.cpp">
-      <Filter>Source Files\vendor\stb_image</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Source Files\vendor\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Source Files\vendor\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Source Files\vendor\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_glfw_gl3.cpp">
-      <Filter>Source Files\vendor\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="TestClearColor.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="TestTexture2D.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
     <ClCompile Include="TestTreeSpaceColonisation.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
@@ -97,6 +58,9 @@
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
     <ClCompile Include="HeightGeneration.cpp">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClCompile>
+    <ClCompile Include="loadpng.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,48 +83,6 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Source Files\vendor\stb_image</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\examples\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\examples\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_glfw_gl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\stb_rect_pack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\stb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\stb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Source Files\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="TestClearColor.h">
-      <Filter>Source Files\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="TestTexture2D.h">
-      <Filter>Source Files\tests</Filter>
-    </ClInclude>
     <ClInclude Include="TestTreeSpaceColonisation.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
@@ -179,21 +101,21 @@
     <ClInclude Include="RidgeGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HeightGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
+    <ClInclude Include="loadpng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Texture.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="River.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="General.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Height.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
