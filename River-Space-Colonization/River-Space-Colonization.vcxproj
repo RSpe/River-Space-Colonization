@@ -161,7 +161,6 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LeafGeneration.cpp" />
-    <ClCompile Include="loadpng.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RidgeGeneration.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LeafGeneration.h" />
-    <ClInclude Include="loadpng.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RidgeGeneration.h" />
     <ClInclude Include="Shader.h" />
