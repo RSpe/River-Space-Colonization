@@ -10,13 +10,13 @@ public:
 
 	void show_feature_map(std::vector<std::vector<float>>, int max_x_point);
 	void curve_primative(int max_x_point, int max_y_point);
-	void set_curve_height(int x_location, int y_location, int new_x, int new_y, float max_distance, int max_x_point);
+	void set_curve_height(int x_location, int y_location, int new_x, int new_y, float max_distance, int max_x_point, float river_height);
 
 	std::vector<std::vector<float>> get_feature_map();
 	std::vector<glm::vec2> get_location_map();
 
-	int primative_distance = 5;
-	int degree = 90;
+	int primative_distance = 8;
+	float angle_multiplier = 0.7f;
 
 private:
 	std::vector<std::vector<float>> feature_map;

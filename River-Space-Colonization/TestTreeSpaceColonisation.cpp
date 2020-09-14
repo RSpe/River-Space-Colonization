@@ -50,13 +50,10 @@ void TestTreeSpaceColonisation::Build()
 
 		//std::cout << glm::to_string(random_roots[i]) << std::endl;
 
-		std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0.01, 0.01)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
+		std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0, 0)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
 		//std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, 1.0f)));
 
 		branches.push_back(root); // Add root as the first branch object.
-
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 		for (int i = 0; i < leaves_to_generate; ++i)
 		{
@@ -86,6 +83,10 @@ void TestTreeSpaceColonisation::Build()
 				glm::vec2 new_position = parent_position + (parent_direction * branch_length);
 				float parent_height = current->get_height();
 				float new_height = parent_height + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+				if (new_height > max_height)
+				{
+					max_height = new_height;
+				}
 				std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, parent_direction, new_height, parent_height));
 				int parent_index = branches.size() - 1;
 				next_branch->set_parent_index(parent_index);
@@ -202,6 +203,16 @@ void TestTreeSpaceColonisation::Grow()
 					glm::vec2 new_position = parent_position + (new_direction * branch_length);
 					float parent_height = branches[k]->get_height();
 					float new_height = parent_height + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
+					//std::cout << parent_height << " " << new_height << std::endl;
+					if (new_height > max_height)
+					{
+						max_height = new_height;
+					}
+
+					//if (new_height < parent_height)
+					//{
+					//	std::cout << "why" << std::endl;
+					//}
 
 					std::shared_ptr<Branch> next_branch(new Branch(parent_position, new_position, new_direction, new_height, parent_height));
 
@@ -224,6 +235,8 @@ void TestTreeSpaceColonisation::Draw()
 	layout1.Push<float>(2);
 	layout2.Push<float>(4);
 	layout2.Push<float>(4);
+	GLCall(glDisable(GL_BLEND));
+	//glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
 
 	if (image_render == false)
 	{
@@ -261,14 +274,26 @@ void TestTreeSpaceColonisation::Draw()
 			leaf_pos.push_back(pixel_pos_leaf);
 		}
 
-		if (branch_position_length != branch_storage_length)
+		if (image_render == true)
 		{
+
 			for (int j = branch_position_length; j < branch_storage_length; ++j)
 			{
+				float new_current_height = (branches[j]->get_height() - 0) / (max_height - 0);
+				float new_parent_height = (branches[j]->get_parent_height() - 0) / (max_height - 0);
+
+				//std::cout << new_current_height << " " << new_parent_height << std::endl;
+
+				// Set position
 				glm::vec2 pixel_pos_branch = (branches[j]->get_position());
 				glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
-				glm::vec4 current_rgb_height = glm::vec4(tree_colour[0], tree_colour[1], tree_colour[2], branches[j]->get_height());
-				glm::vec4 parent_rgb_height = glm::vec4(tree_colour[0], tree_colour[1], tree_colour[2], branches[j]->get_parent_height());
+				//::cout << glm::to_string(pixel_pos_branch) << std::endl;
+				glm::vec4 current_rgb_height = glm::vec4(tree_colour[0], tree_colour[1], tree_colour[2], new_current_height);
+				glm::vec4 parent_rgb_height = glm::vec4(tree_colour[0], tree_colour[1], tree_colour[2], new_parent_height);
+				//branch_combined.push_back(glm::vec4(pixel_pos_parent[0], pixel_pos_parent[1], 0.0f, 1.0f));
+				//branch_combined.push_back(parent_rgb_height);
+				//branch_combined.push_back(glm::vec4(pixel_pos_branch[0], pixel_pos_branch[1], 0.0f, 1.0f));
+				//branch_combined.push_back(current_rgb_height);
 				branch_combined.push_back(glm::vec4(pixel_pos_branch[0], pixel_pos_branch[1], 0.0f, 1.0f));
 				branch_combined.push_back(current_rgb_height);
 				branch_combined.push_back(glm::vec4(pixel_pos_parent[0], pixel_pos_parent[1], 0.0f, 1.0f));
@@ -287,7 +312,7 @@ void TestTreeSpaceColonisation::Draw()
 		/* Have to call uniforms after a shader is bound */
 		m_Shader->SetUniform4f("u_Color", leaf_colour[0], leaf_colour[1], leaf_colour[2], leaf_colour[3]);
 
-		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+		GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		GLCall(glPointSize(3));
@@ -364,15 +389,51 @@ void TestTreeSpaceColonisation::Draw()
 		int current_line = 0;
 		for (int i = 0; i < feature_map.size(); ++i)
 		{
-			if (current_line < max_x_point)
+			//std::cout << feature_map[i][1] << std::endl;
+			if (current_line != max_x_point - 1)
 			{
-				height_map << int(feature_map[i][1] * 255) << " ";
-				current_line += 1;
+				if (feature_map[i][0] == -2.0f)
+				{
+					height_map << int(feature_map[i][1] * 255) << " ";
+					current_line += 1;
+				}
+				else
+				{
+					if (feature_map[i][1] > 255)
+					{
+						height_map << 226 << std::endl;
+					}
+					else
+					{
+						height_map << int(feature_map[i][1]) << " ";
+					}
+					current_line += 1;
+				}
+
 			}
 			else
 			{
-				height_map << int(feature_map[i][1] * 255) << std::endl;
-				current_line = 0;
+				if (feature_map[i][0] == -2.0f)
+				{
+					height_map << int(feature_map[i][1] * 255) << std::endl;
+					//if (int(feature_map[i][1] * 255) > 255)
+					//{
+					//	std::cout << "warning" << std::endl;
+					//}
+					current_line = 0;
+				}
+				else
+				{
+					if (feature_map[i][1] > 255)
+					{
+						height_map << 226 << std::endl;
+					}
+					else
+					{
+						height_map << int(feature_map[i][1]) << std::endl;
+						current_line = 0;
+					}
+				}
 			}
 		}
 

@@ -60,9 +60,6 @@
     <ClCompile Include="HeightGeneration.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
-    <ClCompile Include="loadpng.cpp">
-      <Filter>Source Files\SpaceColonisation</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -103,9 +100,6 @@
     </ClInclude>
     <ClInclude Include="HeightGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
-    </ClInclude>
-    <ClInclude Include="loadpng.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

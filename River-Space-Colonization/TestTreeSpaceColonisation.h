@@ -31,23 +31,23 @@ public:
 	void OnRender();
 	void OnImGuiRender();
 
-	int leaves_to_generate = 150;
+	int leaves_to_generate = 10000;
 
 	float max_distance = 600*600;
-	float min_distance = 0.01;
+	float min_distance = 0.01; // Kill radius
 	float branch_length = 0.02;
 	float min_x_point = -500;
 	float max_x_point = 500;
 	float min_y_point = -500;
 	float max_y_point = 500;
 	int tree_number = 2;
-	int ridge_number = 3;
+	int ridge_number = 0;
 	int ridge_definition = 4;
-	double set_seed = 480340340845;
+	double set_seed = 483052993045;
 
 	std::vector<float> leaf_colour = { 0.0f, 0.2f, 0.3f, 1.0f };
-	std::vector<float> tree_colour = { 0.0f, 0.0f, 0.0f };
-	std::vector<float> ridge_colour = { 0.0f, 1.0f, 0.0f, 1.0f };
+	std::vector<float> tree_colour = { 1.0f, 1.0f, 1.0f };
+	std::vector<float> ridge_colour = { 0.5f, 1.0f, 0.0f, 1.0f };
 
 private:
 
@@ -56,11 +56,12 @@ private:
 
 	int check_leaf_change;
 	int check_branch_change;
+	float max_height = 0;
 	int no_change_count = 0;
 
 	bool finish;
 	bool image_render;
-	int generate_height_map = 0;
+	float generate_height_map = 0.0f;
 
 	std::vector<std::vector<float>> feature_map;
 	std::vector<glm::vec2> location_map;
