@@ -9,6 +9,7 @@
 #include <iostream>
 #include <algorithm> // for copy
 #include <iterator> // for ostream_iterator
+#include <cstddef>
 
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"

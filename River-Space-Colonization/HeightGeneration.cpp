@@ -3,21 +3,11 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-void HeightGeneration::generate_maps(int window_width, int window_height, int min_x_point, int max_x_point, int min_y_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour, int tree_number)
+void HeightGeneration::generate_heights(int window_width, int window_height, int max_x_point, int max_y_point, std::vector<float> tree_colour, std::vector<float> ridge_colour, int tree_number)
 {
 	
-	int read_point_x = (window_width / 2) - (max_x_point / 2);
-	int read_point_y = (window_height / 2) - (max_y_point / 2);
-
-	for (float i = read_point_y; i < read_point_y + max_y_point; ++i)
-	{
-		float y_coord = 2 * ((i - 0) / (window_height - 0)) - 1;
-		for (float j = read_point_x; j < read_point_x + max_x_point; ++j)
-		{
-			float x_coord = 2 * ((j - 0) / (window_width - 0)) - 1;
-			location_map.push_back(glm::vec2(x_coord, y_coord));
-		}
-	}
+	float read_point_x = (window_width / 2.0f) - (max_x_point / 2.0f);
+	float read_point_y = (window_height / 2.0f) - (max_y_point / 2.0f);
 
 	glReadBuffer(GL_FRONT);
 
@@ -38,15 +28,14 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 	// Get the features and their heights, ridge = -3, river = -2, land/terrain = -1
 	for (int m = 0; m < colours.size(); m += 4)
 	{
-		
+		//std::cout << colours[m + 3] << std::endl;
 		if (colours[m + 1] == 1.0f && colours[m] > 0.0f && colours[m] < 1.0f)
 		{
-			feature_map.push_back({ -3.0f, (1 - colours[m + 3]), 0.0f });
+			feature_map.push_back({ -3.0f, colours[m + 3], 0.0f });
 		}
 		else if (colours[m + 3] != 1.0f)
 		{
-			feature_map.push_back({ -2.0f, (1 - colours[m + 3]), 0.0f });
-			//std::cout << colours[m] << " " << colours[m + 1] << " " << colours[m + 2] << " " << colours[m + 3] << std::endl;
+			feature_map.push_back({ -2.0f, colours[m + 3], 0.0f });
 		}
 		else 
 		{
@@ -57,6 +46,71 @@ void HeightGeneration::generate_maps(int window_width, int window_height, int mi
 	//show_feature_map(feature_map, max_x_point);
 }
 
+void HeightGeneration::write_pgm_height_map(int max_x_point, int max_y_point)
+{
+	std::ofstream height_map;
+
+	height_map.open("height_map.pgm");
+
+	height_map << "P2" << std::endl;
+	height_map << max_x_point << " " << max_y_point << std::endl;
+	height_map << 255 << std::endl;
+
+	//height_map << int(feature_map[i][1]);
+	//std::cout << feature_map.size() << std::endl;
+
+	int current_line = 0;
+	for (int i = 0; i < feature_map.size(); ++i)
+	{
+		//std::cout << feature_map[i][1] << std::endl;
+		if (current_line != max_x_point - 1)
+		{
+			if (feature_map[i][0] == -2.0f)
+			{
+				feature_map[i][1] *= 255;
+				height_map << int(feature_map[i][1]) << " ";
+				current_line += 1;
+			}
+			else
+			{
+				if (feature_map[i][1] > 255)
+				{
+					height_map << 255 << std::endl;
+				}
+				else
+				{
+					height_map << int(feature_map[i][1]) << " ";
+				}
+				current_line += 1;
+			}
+
+		}
+		else
+		{
+			if (feature_map[i][0] == -2.0f)
+			{
+				feature_map[i][1] *= 255;
+				height_map << int(feature_map[i][1]) << std::endl;
+				current_line = 0;
+			}
+			else
+			{
+				if (feature_map[i][1] > 255)
+				{
+					height_map << 255 << std::endl;
+				}
+				else
+				{
+					height_map << int(feature_map[i][1]) << std::endl;
+					current_line = 0;
+				}
+			}
+		}
+	}
+
+	height_map.close();
+}
+
 void HeightGeneration::show_feature_map(std::vector<std::vector<float>> feature_map, int max_x_point)
 {
 	int next_line_count = 0;
@@ -65,9 +119,7 @@ void HeightGeneration::show_feature_map(std::vector<std::vector<float>> feature_
 	for (int j = 0; j < feature_map.size(); ++j)
 	{
 		if (next_line_count == max_x_point - 1)
-		{
-			//location_map[(y_value * max_x_point) + (max_x_point - 1)][2] = feature_map[j][1];
-			
+		{			
 			if (feature_map[j][0] == -3.0f)
 			{
 				std::cout << "-" << std::endl;
@@ -92,8 +144,6 @@ void HeightGeneration::show_feature_map(std::vector<std::vector<float>> feature_
 		}
 		else
 		{
-			//location_map[(y_value * max_x_point) + (j % max_x_point)][2] = feature_map[j][1];
-
 			if (feature_map[j][0] == -3.0f)
 			{
 				std::cout << "-" << " ";
@@ -148,7 +198,7 @@ void HeightGeneration::curve_primative(int max_x_point, int max_y_point)
 					int new_x = x_location + x;
 					int new_y = y_location + y;
 
-					if ((new_x > 0 && new_y > 0 && new_x < max_x_point && new_y < max_y_point))
+					if ((new_x > -1 && new_y > -1 && new_x < max_x_point && new_y < max_y_point))
 					{ 
 						set_curve_height(x_location, y_location, new_x, new_y, max_distance, max_x_point, river_height);
 					}
@@ -161,10 +211,10 @@ void HeightGeneration::curve_primative(int max_x_point, int max_y_point)
 void HeightGeneration::set_curve_height(int x_location, int y_location, int new_x, int new_y, float max_distance, int max_x_point, float river_height)
 {
 	float distance = sqrt(pow(new_x - x_location, 2) + pow(new_y - y_location, 2));
-	float river_angle = atan((distance / river_height)) * angle_multiplier; // Radians
+	float river_angle = atan((distance / river_height)) * angle_multiplier; // Radians angle_mult
 	float cross_section_height = tan(river_angle) * distance;
 
-	//std::cout << river_height << " " << cross_section_height << std::endl;
+	//std::cout << cross_section_height << std::endl;
 
 	float type = feature_map[((new_y * max_x_point) + new_x)][0];
 	float current_height = feature_map[((new_y * max_x_point) + new_x)][1];
@@ -194,18 +244,13 @@ void HeightGeneration::set_curve_height(int x_location, int y_location, int new_
 	{
 		float weight = (distance / max_distance);
 		feature_map[((new_y * max_x_point) + new_x)][1] = ((current_weight * current_height) + (new_weight * point_elevation)) / (current_weight + new_weight);
-		feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + point_elevation) / (2);
-		feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + (new_weight * point_elevation)) / (1 + new_weight);
-		feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + point_elevation) / 2;
+		//feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + point_elevation) / (2);
+		//feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + (new_weight * point_elevation)) / (1 + new_weight);
+		//feature_map[((new_y * max_x_point) + new_x)][1] = (current_height + point_elevation) / 2;
 	}
 }
 
 std::vector<std::vector<float>> HeightGeneration::get_feature_map()
 {
 	return feature_map;
-}
-
-std::vector<glm::vec2> HeightGeneration::get_location_map()
-{
-	return location_map;
 }

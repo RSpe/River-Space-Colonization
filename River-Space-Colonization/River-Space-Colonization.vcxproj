@@ -156,8 +156,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Branch.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="HeightGeneration.cpp" />
+    <ClCompile Include="TerrainRender.cpp" />
+    <ClCompile Include="ImageDraw.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LeafGeneration.cpp" />
@@ -165,13 +168,17 @@
     <ClCompile Include="RidgeGeneration.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TerrainDraw.cpp" />
     <ClCompile Include="TestTreeSpaceColonisation.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="HeightGeneration.h" />
+    <ClInclude Include="TerrainRender.h" />
+    <ClInclude Include="ImageDraw.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Leaf.h" />
@@ -179,15 +186,19 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RidgeGeneration.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="TerrainDraw.h" />
     <ClInclude Include="TestTreeSpaceColonisation.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="General.shader" />
-    <None Include="Height.shader" />
-    <None Include="River.shader" />
+    <None Include="CompleteTerrain.shader" />
+    <None Include="GeneralTerrain.shader" />
+    <None Include="RiverImage.shader" />
+    <None Include="RiverTerrain.shader" />
+    <None Include="SudoCompleteTerrain.shader" />
+    <None Include="GeneralImage.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

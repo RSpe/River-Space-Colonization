@@ -1,61 +1,80 @@
 #include "LeafGeneration.h"
 
-const std::vector<glm::vec2> LeafGeneration::generate_leaves(int num_leaves, double seed, int tree_num, float min_x, float max_x, float min_y, float max_y)
+#include <functional>
+
+const std::vector<glm::vec2> LeafGeneration::generate_leaves(int num_leaves, double seed, int tree_num, int max_x_point, int min_x_point, int max_y_point, int min_y_point)
 {
-	srand(seed);
+	float min_x = min_x_point;
+	float min_y = min_y_point;
+	float max_x = max_x_point;
+	float max_y = max_y_point;
 
 	std::vector<glm::vec2> random_leaves;
 	std::vector<glm::vec2> random_roots;
 
-	glm::vec3 current_min = glm::vec3(max_x, max_y, -1.0f);
+	float max_float = std::max(abs(max_x_point + 1), abs(max_y_point + 1));
+	int min_index = -1;
 
+	std::mt19937::result_type set_seed = seed;
+	std::mt19937 gen(set_seed);
+	std::uniform_real_distribution<float> x_pos(min_x_point, max_x_point);
+	std::uniform_real_distribution<float> y_pos(min_y_point, max_y_point);
 
-	for (int i = 0; i < num_leaves + tree_num; i++)
+	int current_size = 0;
+
+	for (int i = 0; i < num_leaves + tree_num + 1; i++)
 	{
-		glm::vec2 xy_position = glm::vec2((min_x + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max_x - min_x)))), (min_y + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max_y - min_y)))));
+		glm::vec2 xy_position = glm::vec2(x_pos(gen), y_pos(gen));
 
-		float current_absolute = std::max(abs(xy_position[0]), abs(xy_position[1]));
+		float find_max_float = std::max(abs(xy_position[0]), abs(xy_position[1]));
 
-		float min = std::max(abs(current_min[0]), abs(current_min[1]));
-
-		if (random_roots.size() < tree_num)
+		if (current_size < tree_num)
 		{
-			if (current_min[2] == -1.0f)
-			{
-				current_min = glm::vec3(xy_position[0], xy_position[1], random_roots.size());
-				random_roots.push_back(xy_position);
-				continue;
-			}
-			else if (current_absolute > min)
-			{
-				random_roots.push_back(xy_position);
-				continue;
-			}
+			random_roots.push_back(xy_position);
+			current_size += 1;
 		}
 
-		else if (current_absolute > min)
+		else if (current_size == tree_num)
 		{
-			random_roots[current_min[2]] = glm::vec2(xy_position[0], xy_position[1]);
-			random_leaves.push_back(glm::vec2(current_min[0], current_min[1]));
-
-			float find_new_min = 3.0f; // Larger than the total window size
-
-			for (int k = 0; k < tree_num; ++k)
+			if (i == current_size + 1)
 			{
-				float check_root = std::max(abs(random_roots[k][0]), abs(random_roots[k][1]));
-
-				if (check_root < find_new_min)
+				for (int j = 0; j < tree_num; ++j)
 				{
-					current_min = glm::vec3(random_roots[k][0], random_roots[k][1], k);
-					find_new_min = check_root;
+					float find_max_min = std::max(abs(random_roots[j][0]), abs(random_roots[j][1]));
+
+					if (find_max_min < max_float)
+					{
+						max_float = find_max_min;
+						min_index = j;
+					}									
 				}
 			}
-			continue;
+
+			else if (find_max_float > max_float)
+			{
+				random_leaves.push_back(random_roots[min_index]);
+				random_roots[min_index] = xy_position;
+				max_float = find_max_float;
+
+				for (int j = 0; j < tree_num; ++j)
+				{
+					float find_max_min = std::max(abs(random_roots[j][0]), abs(random_roots[j][1]));
+
+					if (find_max_min < max_float)
+					{
+						max_float = find_max_min;
+						min_index = j;
+					}
+				}
+			}
+			else
+			{
+				random_leaves.push_back(xy_position);
+			}
 		}
-		random_leaves.push_back(xy_position);
 	}
 
 	random_leaves.insert(random_leaves.end(), random_roots.begin(), random_roots.end());
-
+	
 	return random_leaves;
 }
