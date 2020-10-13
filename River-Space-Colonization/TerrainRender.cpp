@@ -14,28 +14,28 @@ std::vector<glm::vec3> TerrainRender::generate_vertices(std::vector<std::vector<
 	return vertices;
 }
 
-//std::vector<std::vector<glm::vec2>> TerrainRender::generate_tex_coords(std::vector<std::vector<float>> feature_map, int max_x_point, int max_y_point)
-//{
-//	tex_coords = std::vector<std::vector<glm::vec2>>(max_x_point, std::vector<glm::vec2>(max_y_point));
-//
-//	float tex_u = float(max_y_point) * 0.1f;
-//	float tex_v = float(max_x_point) * 0.1f;
-//
-//	for (int y = 0; y < max_y_point; ++y)
-//	{
-//		for (int x = 0; x < max_x_point; ++x)
-//		{
-//			int index = (y * max_x_point) + x;
-//
-//			float row = x / float(max_x_point - 1);
-//			float column = y / float(max_y_point - 1);
-//
-//			tex_coords[y][x] = glm::vec2(tex_u * row, tex_v * column);
-//		}
-//	}
-//
-//	return tex_coords;
-//}
+std::vector<std::vector<glm::vec2>> TerrainRender::generate_tex_coords(std::vector<std::vector<float>> feature_map, int max_x_point, int max_y_point)
+{
+	tex_coords = std::vector<std::vector<glm::vec2>>(max_x_point, std::vector<glm::vec2>(max_y_point));
+
+	float tex_u = float(max_y_point) * 0.1f;
+	float tex_v = float(max_x_point) * 0.1f;
+
+	for (int y = 0; y < max_y_point; ++y)
+	{
+		for (int x = 0; x < max_x_point; ++x)
+		{
+			int index = (y * max_x_point) + x;
+
+			float row = x / float(max_x_point - 1);
+			float column = y / float(max_y_point - 1);
+
+			tex_coords[y][x] = glm::vec2(tex_u * row, tex_v * column);
+		}
+	}
+
+	return tex_coords;
+}
 
 //std::vector<glm::vec3> TerrainRender::generate_normals(int max_x_point, int max_y_point)
 //{
@@ -103,28 +103,48 @@ std::vector<glm::vec3> TerrainRender::generate_vertices(std::vector<std::vector<
 
 std::vector<unsigned int> TerrainRender::generate_index_buffer(int max_x_point, int max_y_point)
 {
-	for (int i = 0; i < vertices.size(); ++i)
-	{
-		if (i == 0)
-		{
-			indices.push_back(i);
-			indices.push_back(i + max_x_point);
-			indices.push_back(i + 1);
-			indices.push_back(i + 1);
-			indices.push_back(i + max_x_point);
-			indices.push_back(i + 1 + max_x_point);
-		}
+	//int index = 0;
+	//for (int i = 0; i < vertices.size(); ++i)
+	//{
+	//	if (index == 0)
+	//	{
+	//		indices.push_back(i);
+	//		indices.push_back(i + max_x_point);
+	//		indices.push_back(i + 1);
+	//		indices.push_back(i + 1);
+	//		indices.push_back(i + max_x_point);
+	//		indices.push_back(i + 1 + max_x_point);
+	//		index += 1;
+	//	}
 
-		else if ((i % max_x_point) != 0)
+	//	else if ((i % max_x_point) != 0)
+	//	{
+	//		indices.push_back(i);
+	//		indices.push_back(i + max_x_point);
+	//		indices.push_back(i + 1);
+	//		indices.push_back(i + 1);
+	//		indices.push_back(i + max_x_point);
+	//		indices.push_back(i + 1 + max_x_point);
+	//	}
+	//}
+	for (int y = 0; y < max_y_point; ++y)
+	{
+		for (int x = 0; x < max_x_point; ++x)
 		{
-			indices.push_back(i);
-			indices.push_back(i + max_x_point);
-			indices.push_back(i + 1);
-			indices.push_back(i + 1);
-			indices.push_back(i + max_x_point);
-			indices.push_back(i + 1 + max_x_point);
+			int index = (y * max_x_point) + x;
+			indices.push_back(index);
+			indices.push_back(index + 1);
+			indices.push_back(index + max_x_point);
+
+			indices.push_back(index + 1);
+			indices.push_back(index + max_x_point + 1);
+			indices.push_back(index + max_x_point);
 		}
 	}
-
+	
+	//for (int i = 0; i < indices.size(); ++i)
+	//{
+	//	std::cout << indices[i] << std::endl;
+	//}
 	return indices;
 }

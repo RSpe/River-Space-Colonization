@@ -139,10 +139,10 @@
     <None Include="CompleteTerrain.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="SudoCompleteTerrain.shader">
+    <None Include="GeneralImage.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="GeneralImage.shader">
+    <None Include="SudoCompleteTerrain1.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

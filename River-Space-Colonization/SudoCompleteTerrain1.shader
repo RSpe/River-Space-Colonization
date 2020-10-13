@@ -13,8 +13,8 @@ uniform mat4 u_Model;
 
 void main()
 {
-	gl_Position = u_Proj * u_View * u_Model * glm::vec4(position, 1.0f);
-	v_colour = glm::vec4(rgba, 1.0f);
+	gl_Position = u_Proj * u_View * u_Model * vec4(position, 1.0f);
+	v_colour = vec4(rgba, 1.0f);
 	//v_colour = glm::vec4(rgba, 1.0f);
 };
 

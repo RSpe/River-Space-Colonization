@@ -7,8 +7,8 @@ class TerrainRender
 public:
 
 	std::vector<glm::vec3> generate_vertices(std::vector<std::vector<float>> feature_map, int max_x_point, int max_y_point);
-	//std::vector<std::vector<glm::vec2>> generate_tex_coords(std::vector<std::vector<float>> feature_map, int max_x_point, int max_y_point);
-	//std::vector<glm::vec3> generate_normals(std::vector<std::vector<glm::vec3>> vertices, int max_x_point, int max_y_point);
+	std::vector<std::vector<glm::vec2>> generate_tex_coords(std::vector<std::vector<float>> feature_map, int max_x_point, int max_y_point);
+	std::vector<glm::vec3> generate_normals(std::vector<std::vector<glm::vec3>> vertices, int max_x_point, int max_y_point);
 	std::vector<unsigned int> generate_index_buffer(int max_x_point, int max_y_point);
 
 private:

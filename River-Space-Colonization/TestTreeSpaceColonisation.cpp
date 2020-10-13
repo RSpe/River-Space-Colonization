@@ -298,7 +298,7 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		//height_generation.show_feature_map(feature_map, max_x_point);
 		
 		image_write = false;
-		//terrain_render = true;
+		terrain_render = true;
 	}
 
 	else if (terrain_render == true)
@@ -317,8 +317,8 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		for (int i = 0; i < vertices.size(); ++i)
 		{
 			height_combined.push_back(vertices[i]);
-			//height_combined.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-			//height_combined.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+			height_combined.push_back(glm::vec3(feature_map[i][1], 0.0f, feature_map[i][1]/2));
+			height_combined.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
 
 		terrain_render = false;
@@ -350,5 +350,5 @@ void TestTreeSpaceColonisation::OnRender(glm::mat4 perspective_proj, glm::mat4 v
 
 void TestTreeSpaceColonisation::OnImGuiRender()
 {
-
+	 
 }

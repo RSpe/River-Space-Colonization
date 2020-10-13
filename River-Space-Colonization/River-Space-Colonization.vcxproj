@@ -197,7 +197,7 @@
     <None Include="GeneralTerrain.shader" />
     <None Include="RiverImage.shader" />
     <None Include="RiverTerrain.shader" />
-    <None Include="SudoCompleteTerrain.shader" />
+    <None Include="SudoCompleteTerrain1.shader" />
     <None Include="GeneralImage.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,8 +10,8 @@ void TerrainDraw::setup()
 	layout2.Push<float>(4);
 
 	layout3.Push<float>(3);
-	//layout3.Push<float>(4);
-	//layout3.Push<float>(4);
+	layout3.Push<float>(3);
+	layout3.Push<float>(3);
 }
 
 void TerrainDraw::render_leaves(std::vector<glm::vec2> leaf_pos, glm::mat4 projection, glm::mat4 view, glm::mat4 model)
@@ -72,7 +72,7 @@ void TerrainDraw::render_branches(std::vector<glm::vec4> branch_combined, glm::m
 void TerrainDraw::render_terrain(std::vector<glm::vec3> height_combined, std::vector<unsigned int> index_buffer, glm::mat4 projection, glm::mat4 view, glm::mat4 model)
 {
 	m_Shader->Unbind();
-	m_Shader = std::make_unique<Shader>("SudoCompleteTerrain.shader");
+	m_Shader = std::make_unique<Shader>("CompleteTerrain.shader");
 	m_Shader->Bind();
 
 	m_Shader->SetUniformMat4f("u_Proj", projection);
