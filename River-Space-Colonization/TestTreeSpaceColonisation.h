@@ -35,15 +35,15 @@ public:
 	void OnRender(glm::mat4 perspective_proj, glm::mat4 view, glm::mat4 model);
 	void OnImGuiRender();
 
-	int leaves_to_generate = 50 ;
+	int leaves_to_generate = 10000;
 
 	float max_distance = 600*600;
 	float min_distance = 10; // Kill radius
 	float branch_length = 10;
 	float min_x_point = 0;
-	float max_x_point = 50;
+	float max_x_point = 500;
 	float min_y_point = 0;
-	float max_y_point = 50;
+	float max_y_point = 500;
 	int tree_number = 3;
 	int ridge_number = 0;
 	int ridge_definition = 4;
