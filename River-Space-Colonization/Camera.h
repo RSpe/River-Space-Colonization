@@ -1,33 +1,28 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include "glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "Include.h"
 
 class Camera
 {
 public:
 
-	Camera();
+	Camera(glm::vec3 start_pos, glm::vec3 start_up, float start_yaw, float start_pitch, float start_move_speed, float start_turn_speed);
 	~Camera();
 
-	void View();
+	glm::mat4 View();
 	void ProcessKeyboard(const char* key, double deltaTime);
 	void ProcessMouse(double xchange, double ychange);
-	void ProcessScroll(double ychange);
+
+	glm::vec3 GetPosition();
+	glm::vec3 GetDirection();
 
 private:
 
 	void Update();
 
-	double yaw = -90.0f;
-	double pitch = 0.0f;
-	double fov = 45.0f;
+	float yaw, pitch, move_speed, turn_speed;
 
-	glm::mat4 view;
-	glm::vec3 cameraPosition, cameraTarget, cameraDirection, cameraRight, cameraUp, cameraFront, up;
+	glm::vec3 position, front, up, right, world_up;
 
 };
 

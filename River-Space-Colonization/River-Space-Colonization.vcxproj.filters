@@ -60,6 +60,18 @@
     <ClCompile Include="HeightGeneration.cpp">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageDraw.cpp">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainDraw.cpp">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainRender.cpp">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -92,24 +104,48 @@
     <ClInclude Include="LeafGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
-    <ClInclude Include="Include.h">
-      <Filter>Source Files\SpaceColonisation</Filter>
-    </ClInclude>
     <ClInclude Include="RidgeGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
     <ClInclude Include="HeightGeneration.h">
       <Filter>Source Files\SpaceColonisation</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageDraw.h">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainDraw.h">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainRender.h">
+      <Filter>Source Files\SpaceColonisation</Filter>
+    </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="River.shader">
+    <None Include="RiverTerrain.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="General.shader">
+    <None Include="RiverImage.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Height.shader">
+    <None Include="GeneralTerrain.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="CompleteTerrain.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="GeneralImage.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="SudoCompleteTerrain1.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="RidgeImage.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
