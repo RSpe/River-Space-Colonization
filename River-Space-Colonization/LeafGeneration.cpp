@@ -74,6 +74,13 @@ const std::vector<glm::vec2> LeafGeneration::generate_leaves(int num_leaves, dou
 		}
 	}
 
+	// REMOVE
+	for (int i = 0; i < random_roots.size(); ++i)
+	{
+		random_roots[i][1] = max_y_point - random_roots[i][1];
+		//random_roots[i][0] = max_x_point - random_roots[i][0];
+	}
+
 	random_leaves.insert(random_leaves.end(), random_roots.begin(), random_roots.end());
 	
 	return random_leaves;

@@ -145,5 +145,8 @@
     <None Include="SudoCompleteTerrain1.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="RidgeImage.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

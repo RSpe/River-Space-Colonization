@@ -15,8 +15,8 @@ public:
 	void render_ridges(std::vector<std::vector<glm::vec2>> random_ridges);
 	void render_branches(std::vector<glm::vec4> branch_combined);
 
-	std::vector<float> leaf_colour = { 1.0f, 0.2f, 0.3f, 1.0f };
-	std::vector<float> ridge_colour = { 0.5f, 1.0f, 0.0f, 1.0f };
+	std::vector<float> leaf_colour = { 0.0f, 0.4f, 0.0f, 1.0f };
+	std::vector<float> ridge_colour = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 private:
 

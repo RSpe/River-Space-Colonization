@@ -35,27 +35,25 @@ public:
 	void OnRender(glm::mat4 perspective_proj, glm::mat4 view, glm::mat4 model);
 	void OnImGuiRender();
 
-	int leaves_to_generate = 50 ;
+	int leaves_to_generate = 10000;
 
-	float max_distance = 600*600;
+	float max_distance = 100;
 	float min_distance = 10; // Kill radius
 	float branch_length = 10;
 	float min_x_point = 0;
-	float max_x_point = 50;
+	float max_x_point = 500;
 	float min_y_point = 0;
-	float max_y_point = 50;
-	int tree_number = 3;
+	float max_y_point = 500;
+	int tree_number = 2;
 	int ridge_number = 0;
-	int ridge_definition = 4;
-	double set_seed = 4830534897958945;
-
-
+	int ridge_definition = 20;
+	double set_seed = 2345678902346789;
 
 private:
 
-	std::vector<float> leaf_colour = { 0.0f, 0.2f, 0.3f, 1.0f };
-	std::vector<float> tree_colour = { 1.0f, 0.0f, 1.0f };
-	std::vector<float> ridge_colour = { 0.5f, 1.0f, 0.0f, 1.0f };
+	std::vector<float> leaf_colour = { 0.0f, 1.0f, 0.0f, 1.0f };
+	std::vector<float> tree_colour = { 0.0f, 0.0f, 0.6f };
+	std::vector<float> ridge_colour = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	HeightGeneration height_generation;
 	TerrainRender terrain_build;
@@ -80,7 +78,6 @@ private:
 	std::vector<std::vector<float>> feature_map;
 	std::vector<glm::vec2> location_map;
 	std::vector<glm::vec4> height_map_combined;
-	//float height_map[window_width * window_height] = {0};
 
 	std::vector<glm::vec2> random_leaves;
 	std::vector<glm::vec2> random_roots;
@@ -104,12 +101,11 @@ private:
 	std::unique_ptr<VertexBuffer> m_VertexBuffer5;
 
 	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> tex_coords;
 	std::vector<glm::vec3> normals;
 
 	std::vector<glm::vec3> height_combined;
 	std::vector<unsigned int> index_buffer;
 
 	bool leaf_convert = true;
-
-	//std::vector<float> height_map;
 };

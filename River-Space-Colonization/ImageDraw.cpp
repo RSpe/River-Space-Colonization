@@ -45,17 +45,33 @@ void ImageDraw::render_leaves(std::vector<glm::vec2> leaf_pos, bool leaf_convert
 
 void ImageDraw::render_ridges(std::vector<std::vector<glm::vec2>> random_ridges)
 {
+	std::vector<std::vector<glm::vec2>> convert_ridge_pos;
+
+	for (int i = 0; i < random_ridges.size(); ++i)
+	{
+		std::vector<glm::vec2> current_ridge;
+
+		for (int j = 0; j < random_ridges[i].size(); ++j)
+		{
+			float x_pos = (2.0f * (random_ridges[i][j][0] - min_x_point) / (float)(max_x_point - min_x_point) - 1.0f) * (max_x_point / (float)window_width);
+			float y_pos = (2.0f * (random_ridges[i][j][1] - min_y_point) / (float)(max_y_point - min_y_point) - 1.0f) * (max_y_point / (float)window_height);
+
+			current_ridge.push_back(glm::vec2(x_pos, y_pos));
+		}
+		convert_ridge_pos.push_back(current_ridge);
+	}
+
 	m_Shader->Unbind();
-	m_Shader = std::make_unique<Shader>("GeneralTerrain.shader");
+	m_Shader = std::make_unique<Shader>("RidgeImage.shader");
 	m_Shader->Bind();
 
-	for (int i = 0; i < random_ridges.size(); i++)
+	for (int k = 0; k < convert_ridge_pos.size(); ++k)
 	{
-		m_VertexBuffer2 = std::make_unique<VertexBuffer>(random_ridges[i].data(), random_ridges[i].size() * sizeof(glm::vec2));
+		m_VertexBuffer2 = std::make_unique<VertexBuffer>(convert_ridge_pos[k].data(), convert_ridge_pos[k].size() * sizeof(glm::vec2));
 		m_VAO_image->AddBuffer(*m_VertexBuffer2, layout1);
 		m_Shader->SetUniform4f("u_Color", ridge_colour[0], ridge_colour[1], ridge_colour[2], ridge_colour[3]);
 
-		GLCall(glDrawArrays(GL_POINTS, 0, random_ridges[i].size()));
+		GLCall(glDrawArrays(GL_LINE_STRIP, 0, convert_ridge_pos[k].size()));
 	}
 }
 

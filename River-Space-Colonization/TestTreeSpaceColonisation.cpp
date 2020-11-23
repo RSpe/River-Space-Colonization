@@ -16,7 +16,7 @@ void TestTreeSpaceColonisation::Build()
 	random_leaves = LeafGeneration::generate_leaves(leaves_to_generate, set_seed, tree_number, max_x_point, min_x_point, max_y_point, min_y_point); // Generate random 2D points as leaves used for unique branch building.
 	random_roots = std::vector<glm::vec2>(random_leaves.begin() + leaves_to_generate, random_leaves.end());
 	random_leaves.erase(random_leaves.begin() + leaves_to_generate, random_leaves.end());
-	//random_ridges = RidgeGeneration::generate_ridges(ridge_number, set_seed, ridge_definition, random_roots); // Ridge number, seed, number of points in ridge (higher  = smoother, greater resolution)
+	random_ridges = RidgeGeneration::generate_ridges(ridge_number, set_seed, ridge_definition, random_roots); // Ridge number, seed, number of points in ridge (higher  = smoother, greater resolution)
 
 	for (int n = 0; n < ridge_number; ++n)
 	{
@@ -26,27 +26,13 @@ void TestTreeSpaceColonisation::Build()
 		}
 	}
 
-	//for (int z = 0; z < random_roots.size(); ++z)
-	//{
-	//	std::cout << glm::to_string(random_roots[z]) << std::endl;
-	//}
-
-	//for (int z = 0; z < random_ridges_1d.size(); ++z)
-	//{
-	//	std::cout << glm::to_string(random_ridges_1d[z]) << std::endl;
-	//}
-
 	for (int i = 0; i < tree_number; i++)
 	{
-		//std::cout << "--------------Build-------------" << std::endl;
 		int root_position = i * 2;
 
 		finish = false;
 
-		//std::cout << glm::to_string(random_roots[i]) << std::endl;
-
 		std::shared_ptr<Branch> root(new Branch(random_roots[i], random_roots[i], glm::vec2(0.0f, 1.0f), 0, 0)); // Create root branch using direction of (0.0f, 1.0f) which is pointing upwards.
-		//std::shared_ptr<Branch> root(new Branch(glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, -1.0f), glm::vec2(0.0f, 1.0f)));
 
 		branches.push_back(root); // Add root as the first branch object.
 
@@ -94,7 +80,6 @@ void TestTreeSpaceColonisation::Build()
 
 void TestTreeSpaceColonisation::Grow()
 {
-	//std::cout << "--------------Grow--------------" << std::endl;
 	float record = -1;
 
 	if (finish == false)
@@ -174,7 +159,6 @@ void TestTreeSpaceColonisation::Grow()
 					glm::vec2 normalised = glm::normalize(new_direction);
 					branches[closest_branch]->set_direction(normalised);
 					branches[closest_branch]->increment_count(1);
-					//branches[closest_branch]->set_height(1);
 				}
 			}
 
@@ -198,7 +182,6 @@ void TestTreeSpaceColonisation::Grow()
 					glm::vec2 new_position = parent_position + (new_direction * branch_length);
 					float parent_height = branches[k]->get_height();
 					float new_height = parent_height + (sqrt(pow((new_position[0] - parent_position[0]), 2) + pow((new_position[1] - parent_position[1]), 2)));
-					//std::cout << parent_height << " " << new_height << std::endl;
 					if (new_height > max_height)
 					{
 						max_height = new_height;
@@ -213,7 +196,6 @@ void TestTreeSpaceColonisation::Grow()
 			}
 		}
 		branches.insert(branches.end(), new_branches.begin(), new_branches.end());
-		//std::cout << count << std::endl;
 	}
 }
 
@@ -231,7 +213,6 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		int branch_storage_length = branches.size();
 		int branch_position_length = branch_combined.size() / 4; // There is double the amount of branch positions stored as we need to store the parent and current point so a line can be drawn between the two.
 
-		//std::cout << check_leaf_change << " " << leaf_storage_length << std::endl;
 		if (check_leaf_change != leaf_storage_length)
 		{
 			check_leaf_change = leaf_storage_length;
@@ -243,7 +224,6 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		{
 			if (no_change_count == 5)
 			{
-				//leaf_pos = {};
 				image_draw = false;
 				image_write = true;
 				leaf_convert = false;
@@ -257,7 +237,6 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		for (int i = 0; i < leaf_storage_length; ++i)
 		{
 			glm::vec2 pixel_pos_leaf = (leaves[i].get_position());
-			//std::cout << pixel_pos_leaf[0] << " " << pixel_pos_leaf[1] << std::endl;
 			leaf_pos.push_back(glm::vec2(pixel_pos_leaf[0], pixel_pos_leaf[1]));
 		}
 
@@ -268,9 +247,6 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 				// Used to limit river height so terrain generation size stays within 0 -> 1
 				float new_current_height = 0.8 * (branches[j]->get_height() - 0) / (max_height - 0);
 				float new_parent_height = 0.8 * (branches[j]->get_parent_height() - 0) / (max_height - 0);
-				//float new_current_height = 0.9 * (branches[j]->get_height());
-				//float new_parent_height = 0.9 * (branches[j]->get_parent_height());
-
 				// Set position
 				glm::vec2 pixel_pos_branch = (branches[j]->get_position());
 				glm::vec2 pixel_pos_parent = (branches[j]->get_parent());
@@ -283,19 +259,22 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 			}
 		}
 
-		image.render_leaves(leaf_pos, leaf_convert, leaf_storage_length);
-		//image_draw.render_ridges(random_ridges, orthographic_proj);
-		//image.render_leaves(leaf_pos, orthographic_proj);
+		if (image_draw == true)
+		{
+			image.render_leaves(leaf_pos, leaf_convert, leaf_storage_length);
+			image.render_ridges(random_ridges);
+		}
+		
 		image.render_branches(branch_combined);
+
 	}
 
 	else if (image_write == true)
 	{
-		height_generation.generate_heights(window_width, window_height, max_x_point, max_y_point, tree_colour, ridge_colour, tree_number);
+ 		height_generation.generate_heights(window_width, window_height, max_x_point, max_y_point, tree_colour, ridge_colour, tree_number, set_seed);
 		height_generation.write_pgm_height_map(max_x_point, max_y_point);
 		
 		feature_map = height_generation.get_feature_map();
-		//height_generation.show_feature_map(feature_map, max_x_point);
 		
 		image_write = false;
 		terrain_render = true;
@@ -304,21 +283,26 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 	else if (terrain_render == true)
 	{
 		vertices = terrain_build.generate_vertices(feature_map, max_x_point, max_y_point);
-
-		//terrain_build.generate_tex_coords(feature_map, max_x_point, max_y_point);
-		//normals = terrain_build.generate_normals(max_x_point, max_y_point);
 		index_buffer = terrain_build.generate_index_buffer(max_x_point, max_y_point);
-		//std::cout << index_buffer.size() << std::endl;
-		//for (int i = 0; i < index_buffer.size(); ++i)
-		//{
-		//	std::cout << index_buffer[i] << std::endl;
-		//}
 
+		// Colours set just for natural display
 		for (int i = 0; i < vertices.size(); ++i)
 		{
 			height_combined.push_back(vertices[i]);
-			height_combined.push_back(glm::vec3(feature_map[i][1], 0.0f, feature_map[i][1]/2));
-			height_combined.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+			if (feature_map[i][0] == -3.0f)
+			{
+				height_combined.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+			}
+			else if (feature_map[i][0] == -2.0f)
+			{
+				height_combined.push_back(glm::vec3(0.08235f * feature_map[i][1], 0.23529f * feature_map[i][1], 0.69803f * feature_map[i][1]));
+			}
+			else if (feature_map[i][0] == -1.0f)
+			{
+				height_combined.push_back(glm::vec3(0.08235f * feature_map[i][1], 0.69803f * feature_map[i][1], 0.23529f * feature_map[i][1]));
+
+			}
 		}
 
 		terrain_render = false;
@@ -330,10 +314,7 @@ void TestTreeSpaceColonisation::Draw(glm::mat4 perspective_proj, glm::mat4 view,
 		GLCall(glClearColor(1.0f, 1.0f, 1.0f, 1.0f));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//terrain.render_leaves(leaf_pos, perspective_proj, view, model);
-		//terrain.render_ridges(random_ridges, perspective_proj, view, model);
-		//terrain.render_branches(branch_combined, perspective_proj, view, model);
-		terrain.render_terrain(height_combined, index_buffer, perspective_proj, view, model);
+		terrain.render_terrain(height_combined, index_buffer, perspective_proj, view, model, max_x_point, max_y_point);
 	}
 }
 

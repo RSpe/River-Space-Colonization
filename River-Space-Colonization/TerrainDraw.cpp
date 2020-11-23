@@ -11,7 +11,6 @@ void TerrainDraw::setup()
 
 	layout3.Push<float>(3);
 	layout3.Push<float>(3);
-	layout3.Push<float>(3);
 }
 
 void TerrainDraw::render_leaves(std::vector<glm::vec2> leaf_pos, glm::mat4 projection, glm::mat4 view, glm::mat4 model)
@@ -69,7 +68,7 @@ void TerrainDraw::render_branches(std::vector<glm::vec4> branch_combined, glm::m
 	glDrawArrays(GL_POINTS, 0, branch_combined.size());
 }
 
-void TerrainDraw::render_terrain(std::vector<glm::vec3> height_combined, std::vector<unsigned int> index_buffer, glm::mat4 projection, glm::mat4 view, glm::mat4 model)
+void TerrainDraw::render_terrain(std::vector<glm::vec3> height_combined, std::vector<unsigned int> index_buffer, glm::mat4 projection, glm::mat4 view, glm::mat4 model, int max_x_point, int max_y_point)
 {
 	m_Shader->Unbind();
 	m_Shader = std::make_unique<Shader>("CompleteTerrain.shader");
@@ -86,6 +85,10 @@ void TerrainDraw::render_terrain(std::vector<glm::vec3> height_combined, std::ve
 	glGenBuffers(1, &IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer.size() * sizeof(unsigned int), index_buffer.data(), GL_STATIC_DRAW);
-
+	
+	glEnable(GL_PRIMITIVE_RESTART);
+	glPrimitiveRestartIndex(max_x_point * max_y_point);
 	GLCall(glDrawElements(GL_TRIANGLE_STRIP, index_buffer.size(), GL_UNSIGNED_INT, 0));
+	glDisable(GL_PRIMITIVE_RESTART);
+
 }

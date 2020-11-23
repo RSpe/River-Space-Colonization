@@ -195,6 +195,7 @@
   <ItemGroup>
     <None Include="CompleteTerrain.shader" />
     <None Include="GeneralTerrain.shader" />
+    <None Include="RidgeImage.shader" />
     <None Include="RiverImage.shader" />
     <None Include="RiverTerrain.shader" />
     <None Include="SudoCompleteTerrain1.shader" />

@@ -3,7 +3,6 @@
 
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 rgba;
-layout(location = 2) in vec3 normal;
 
 out vec4 v_colour;
 
@@ -14,7 +13,7 @@ uniform mat4 u_Model;
 void main()
 {
 	gl_Position = u_Proj * u_View * u_Model * glm::vec4(position, 1.0f);
-	v_colour = glm::vec4(rgba, 1.0f);
+	v_colour = glm::vec4(rgba, position[1]/255.0f);
 	//v_colour = glm::vec4(rgba, 1.0f);
 };
 
